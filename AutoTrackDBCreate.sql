@@ -1,0 +1,93 @@
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE User (
+   userID INTEGER PRIMARY KEY,
+   username VARCHAR(100) NOT NULL UNIQUE,
+   password VARCHAR(100) NOT NULL,
+   isDriver BOOLEAN NOT NULL DEFAULT 0,
+   isManager BOOLEAN NOT NULL DEFAULT 0,
+   firstName VARCHAR(100) NOT NULL,
+   lastName VARCHAR(100) NOT NULL,
+   Birthday DATE NOT NULL
+);
+
+CREATE TABLE Car (
+   carID INTEGER PRIMARY KEY,
+   licenseNumber VARCHAR(30) NOT NULL UNIQUE,
+   model VARCHAR(100) NOT NULL,
+   year INTEGER NOT NULL,
+   isModified BOOLEAN NOT NULL DEFAULT 0,
+   userID INTEGER NOT NULL,
+   FOREIGN KEY (userID) REFERENCES User(userID)
+       ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE Event (
+   eventID INTEGER PRIMARY KEY,
+   cost DECIMAL(10,2) NOT NULL CHECK (cost >= 0),
+   title TEXT NOT NULL,
+   course TEXT NOT NULL,
+   location TEXT NOT NULL,
+   difficulty TEXT NOT NULL,
+   date DATE NOT NULL,
+   startTime TIME,
+   endTime TIME,
+   numAttempts INTEGER NOT NULL CHECK (numAttempts >= 0) 
+);
+
+CREATE TABLE Registration (
+   registrationID INTEGER PRIMARY KEY,
+   userID INTEGER NOT NULL,
+   eventID INTEGER NOT NULL,
+   carID INTEGER NOT NULL,
+   registrationStatus VARCHAR(50),
+   registrationDate DATE,
+   carClass TEXT NOT NULL,
+   checkedIn BOOLEAN DEFAULT 0,
+   UNIQUE (userID, eventID),
+   FOREIGN KEY (userID) REFERENCES User(userID)
+       ON UPDATE CASCADE ON DELETE CASCADE,
+   FOREIGN KEY (eventID) REFERENCES Event(eventID)
+       ON UPDATE CASCADE ON DELETE CASCADE,
+   FOREIGN KEY (carID) REFERENCES Car(cariD)
+       ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE Run (
+   runID INTEGER PRIMARY KEY,
+   runTime REAL,
+   notes TEXT,
+   runNumber INTEGER,
+   registrationID INTEGER NOT NULL,
+   userID INTEGER,
+   FOREIGN KEY (registrationID) REFERENCES Registration(registrationID)
+       ON UPDATE CASCADE ON DELETE CASCADE,
+   FOREIGN KEY (userID) REFERENCES User(userID)
+       ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+CREATE TABLE Penalty (
+   penaltyID INTEGER PRIMARY KEY,
+   time REAL,
+   description TEXT
+);
+
+CREATE TABLE ManagesEvent (
+   userID INTEGER NOT NULL,
+   eventID INTEGER NOT NULL,
+   Primary Key (userID, eventID),
+   FOREIGN KEY (userID) REFERENCES User(userID)
+       ON UPDATE CASCADE ON DELETE CASCADE,
+   FOREIGN KEY (eventID) REFERENCES Event(eventID)
+       ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE RunPenalty (
+   runID INTEGER NOT NULL,
+   penaltyID INTEGER NOT NULL,
+   Primary Key (runID, penaltyID),
+   FOREIGN KEY (runID) REFERENCES Run(runID)
+       ON UPDATE CASCADE ON DELETE CASCADE,
+   FOREIGN KEY (penaltyID) REFERENCES Penalty(penaltyID)
+       ON UPDATE CASCADE ON DELETE CASCADE
+);
