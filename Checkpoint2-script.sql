@@ -91,25 +91,45 @@ WHERE userID = 11;
 DELETE FROM User
 WHERE userID = 11;
 -- ----------------------------------------------------------------------------
--- Statement 04: Insert into User.
--- Explanation: The query inserts a user into the database. 
--- Containing values of username, passwordhash, isDriver, isManager, firstName, lastName, and birthday.
+-- Statement 04: Insert into Car.
+-- Explanation: The query inserts a car into the database. 
+-- Containing values of licenseNumber, model, year, isModified, userID.
 -- ----------------------------------------------------------------------------
 INSERT INTO Car (licenseNumber, model, year, isModified, userID)
 VALUES ('234dsf23413', 'Mitsubishi Lancer', '2017', 1, 1);
 -- ----------------------------------------------------------------------------
--- Statement 05: Update user information.
--- Explanation: The query updates a users information. The information is updated based off carID.
+-- Statement 05: Update car information.
+-- Explanation: The query updates the car information. The information is updated based off carID.
 -- ----------------------------------------------------------------------------
 UPDATE Car
 SET licenseNumber = '23243ggg23432'
 WHERE carID = 11;
 -- ----------------------------------------------------------------------------
--- Statement 06: Deletes user information.
--- Explanation: The query deletes the users information. The information is updated based off username, but can likewise be updated with userID.
+-- Statement 06: Delete car information.
+-- Explanation: The query deletes the car information. The information is updated based off carID.
 -- ----------------------------------------------------------------------------
 DELETE FROM Car
 WHERE carID = 11;
+
+-- Statement 07: Insert into Events.
+-- Explanation: The query inserts an event into the database. 
+-- Containing values of username, passwordhash, isDriver, isManager, firstName, lastName, and birthday.
+-- ----------------------------------------------------------------------------
+INSERT INTO Event (cost, title, course, location, difficulty, date, startTime, endTime, numAttempts)
+VALUES (50, 'Non-Modified Cars', 'Laguna Seca', 'Monterey', 'hard', '2026-12-25',  '09:00', '16:00', 3);
+-- ----------------------------------------------------------------------------
+-- Statement 08: Update event information.
+-- Explanation: The query updates a event information. The information is updated based off eventID
+-- ----------------------------------------------------------------------------
+UPDATE Event
+SET title = 'Modified Cars'
+WHERE eventID = 1;
+-- ----------------------------------------------------------------------------
+-- Statement 09: Delete event information.
+-- Explanation: The query deletes the event information. The information is updated based off eventID
+-- ----------------------------------------------------------------------------
+DELETE FROM Event
+WHERE eventID = 1;
 
 
 
