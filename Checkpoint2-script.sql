@@ -76,20 +76,20 @@ PRAGMA foreign_keys = ON;
 -- Containing values of username, passwordhash, isDriver, isManager, firstName, lastName, and birthday.
 -- ----------------------------------------------------------------------------
 INSERT INTO User (username, passwordhash, isDriver, isManager, firstName, lastName, birthday)
-VALUES ('rml', 'examplepassword', 1, 1, 'Raul', 'Martinez Luna', '2005-01-01');
+VALUES ('rmartinezluna', 'testhash11', 1, 1, 'Raul', 'Martinez Luna', '2005-01-01');
 -- ----------------------------------------------------------------------------
 -- Statement 02: Update user information.
--- Explanation: The query updates a users information. The information is updated based off username, but can likewise be updated with userID.
+-- Explanation: The query updates a users information. The information is updated based off userID.
 -- ----------------------------------------------------------------------------
 UPDATE User
 SET firstName = 'Roland'
-WHERE username = 'rml';
+WHERE userID = 11;
 -- ----------------------------------------------------------------------------
 -- Statement 03: Deletes user information.
--- Explanation: The query deletes the users information. The information is updated based off username, but can likewise be updated with userID.
+-- Explanation: The query deletes the users information. The information is updated based off userID.
 -- ----------------------------------------------------------------------------
 DELETE FROM User
-WHERE username = 'rml';
+WHERE userID = 11;
 -- ----------------------------------------------------------------------------
 -- Statement 04: Insert into User.
 -- Explanation: The query inserts a user into the database. 
