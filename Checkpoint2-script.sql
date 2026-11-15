@@ -119,9 +119,16 @@ WHERE carID = 1;
 -- and HAVING, scalar subqueries, table aliasing, and conditional updates.
 -- ============================================================================
 -- ----------------------------------------------------------------------------
--- Statement 11: [Brief Title]
--- Explanation: [1 to 2 sentences explaining the join logic, filtering,
--- or conditional modification].
+-- Statement 11: Count event registrations for each driver
+-- Explanation: The left join connects each user to their event registrations,
+-- keeping all users even if they have no registrations. The WHERE clause filters
+-- the results to only users registered as drivers, while COUNT calculates their
+-- total number of event registrations.
+
+SELECT u.userID AS "Driver ID", u.firstName AS "First Name", u.lastName AS "Last Name", COUNT(r.registrationID) AS "Registration Count"
+FROM User AS u LEFT JOIN Registration AS r ON u.userID = r.userID
+WHERE u.isDriver = 1
+GROUP BY u.userID, u.firstName, u.lastName;
 -- ----------------------------------------------------------------------------
 -- [Insert SQL Statement 11 Here];
 -- [Continue Statements 12 through 21...]
