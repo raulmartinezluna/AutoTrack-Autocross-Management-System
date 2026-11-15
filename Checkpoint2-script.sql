@@ -123,13 +123,13 @@ VALUES (50, 'Non-Modified Cars', 'Laguna Seca', 'Monterey', 'hard', '2026-12-25'
 -- ----------------------------------------------------------------------------
 UPDATE Event
 SET title = 'Modified Cars'
-WHERE eventID = 1;
+WHERE eventID = 6;
 -- ----------------------------------------------------------------------------
 -- Statement 09: Delete event information.
 -- Explanation: The query deletes the event information. The information is updated based off eventID
 -- ----------------------------------------------------------------------------
 DELETE FROM Event
-WHERE eventID = 1;
+WHERE eventID = 6;
 
 
 
