@@ -149,6 +149,18 @@ SELECT u.userID AS "Driver ID", u.firstName AS "First Name", u.lastName AS "Last
 FROM User AS u LEFT JOIN Registration AS r ON u.userID = r.userID
 WHERE u.isDriver = 1
 GROUP BY u.userID, u.firstName, u.lastName;
+
+-- ----------------------------------------------------------------------------
+-- Statement 12: Count managed events for each manager
+-- Explanation: The left join connects each manager to the events they manage,
+-- including managers with no assigned events. Count calculates the total
+-- number of events managed by each user.
+
+SELECT u.userID AS "Manager ID", u.firstName AS "First Name", u.lastName AS "Last Name", COUNT(m.eventID) AS "Managed Event Count"
+FROM User AS u LEFT JOIN ManagesEvent AS m ON u.userID = m.userID
+WHERE u.isManager = 1
+GROUP BY u.userID, u.firstName, u.lastName;
+
 -- ----------------------------------------------------------------------------
 -- [Insert SQL Statement 11 Here];
 -- [Continue Statements 12 through 21...]
