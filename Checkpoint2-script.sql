@@ -103,13 +103,13 @@ VALUES ('234dsf23413', 'Mitsubishi Lancer', '2017', 1, 1);
 -- ----------------------------------------------------------------------------
 UPDATE Car
 SET licenseNumber = '23243ggg23432'
-WHERE carID = 1;
+WHERE carID = 11;
 -- ----------------------------------------------------------------------------
 -- Statement 06: Deletes user information.
 -- Explanation: The query deletes the users information. The information is updated based off username, but can likewise be updated with userID.
 -- ----------------------------------------------------------------------------
 DELETE FROM Car
-WHERE carID = 1;
+WHERE carID = 11;
 
 
 
