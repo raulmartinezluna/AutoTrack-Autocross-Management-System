@@ -110,10 +110,10 @@ WHERE carID = 11;
 -- ----------------------------------------------------------------------------
 DELETE FROM Car
 WHERE carID = 11;
-
+-- ----------------------------------------------------------------------------
 -- Statement 07: Insert into Events.
 -- Explanation: The query inserts an event into the database. 
--- Containing values of username, passwordhash, isDriver, isManager, firstName, lastName, and birthday.
+-- Containing values of cost, title, course, location, difficulty, date, startTime, endTime, numAttempts.
 -- ----------------------------------------------------------------------------
 INSERT INTO Event (cost, title, course, location, difficulty, date, startTime, endTime, numAttempts)
 VALUES (50, 'Non-Modified Cars', 'Laguna Seca', 'Monterey', 'hard', '2026-12-25',  '09:00', '16:00', 3);
@@ -130,6 +130,27 @@ WHERE eventID = 6;
 -- ----------------------------------------------------------------------------
 DELETE FROM Event
 WHERE eventID = 6;
+-- ----------------------------------------------------------------------------
+-- Statement 10: Insert into Registration.
+-- Explanation: The query inserts a registration into the database. 
+-- Containing values of .
+-- ----------------------------------------------------------------------------
+INSERT INTO Registration (userID, eventID, carID, registrationStatus, registrationDate, carClass, checkedIn)
+VALUES (8, 5, 8, 'Pending', '2026-11-12', 'Street', 0);
+-- ----------------------------------------------------------------------------
+-- Statement 11: Update registration information (registrationStatus).
+-- Explanation: The query updates registration information. The information is updated based off registrationID
+-- ----------------------------------------------------------------------------
+UPDATE Registration
+SET registrationStatus = 'Confirmed'
+WHERE registrationID = 31;
+-- ----------------------------------------------------------------------------
+-- Statement 12: Delete registration information.
+-- Explanation: The query deletes registration information. The information is updated based off registrationID
+-- ----------------------------------------------------------------------------
+DELETE FROM Registration
+WHERE registrationID = 31;
+
 
 
 
@@ -139,12 +160,12 @@ WHERE eventID = 6;
 -- and HAVING, scalar subqueries, table aliasing, and conditional updates.
 -- ============================================================================
 -- ----------------------------------------------------------------------------
--- Statement 11: Count event registrations for each driver
+-- Statement xx: Count event registrations for each driver
 -- Explanation: The left join connects each user to their event registrations,
 -- keeping all users even if they have no registrations. The WHERE clause filters
 -- the results to only users registered as drivers, while COUNT calculates their
 -- total number of event registrations.
-
+-- ----------------------------------------------------------------------------
 SELECT u.userID AS "Driver ID", u.firstName AS "First Name", u.lastName AS "Last Name", COUNT(r.registrationID) AS "Registration Count"
 FROM User AS u LEFT JOIN Registration AS r ON u.userID = r.userID
 WHERE u.isDriver = 1
