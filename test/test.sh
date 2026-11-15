@@ -1,5 +1,9 @@
 db="Checkpoint2-dbase.sqlite3"
 
+#Remove Database
+rm -f $db
+
+
 #Add Database
 sqlite3 $db < test/AutoTrackDBCreate.sql
 
