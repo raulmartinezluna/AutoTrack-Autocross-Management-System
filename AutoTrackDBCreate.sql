@@ -3,12 +3,12 @@ PRAGMA foreign_keys = ON;
 CREATE TABLE User (
    userID INTEGER PRIMARY KEY,
    username VARCHAR(100) NOT NULL UNIQUE,
-   password VARCHAR(100) NOT NULL,
+   passwordhash VARCHAR(100) NOT NULL,
    isDriver BOOLEAN NOT NULL DEFAULT 0,
    isManager BOOLEAN NOT NULL DEFAULT 0,
    firstName VARCHAR(100) NOT NULL,
    lastName VARCHAR(100) NOT NULL,
-   Birthday DATE NOT NULL
+   birthday DATE NOT NULL
 );
 
 CREATE TABLE Car (

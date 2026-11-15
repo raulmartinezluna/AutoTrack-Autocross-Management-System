@@ -13,7 +13,8 @@
 -- explicitly state: "No modifications made to the Checkpoint 1 schema."
 --
 -- Modifications:
--- 1. No modifications made to the Checkpoint 1 schema.
+-- 1. Changed tuple under User table from password to passwordhash.
+-- 2. Changed tuple under User table from 
 -- ============================================================================
 -- ============================================================================
 -- MEMBER CONTRIBUTIONS SUMMARY (GROUPED AT THE TOP)
@@ -70,17 +71,48 @@ PRAGMA foreign_keys = ON;
 -- basic sorting, simple aggregate functions, and pattern matching.
 -- ============================================================================
 -- ----------------------------------------------------------------------------
--- Statement 01: [Brief Title]
--- Explanation: [1 to 2 sentences explaining what data the query retrieves
--- or what state modification it performs].
+-- Statement 01: Insert into User.
+-- Explanation: The query inserts a user into the database. 
+-- Containing values of username, passwordhash, isDriver, isManager, firstName, lastName, and birthday.
 -- ----------------------------------------------------------------------------
--- [Insert SQL Statement 01 Here];
+INSERT INTO User (username, passwordhash, isDriver, isManager, firstName, lastName, birthday)
+VALUES ('rml', 'examplepassword', 1, 1, 'Raul', 'Martinez Luna', '2005-01-01');
 -- ----------------------------------------------------------------------------
--- Statement 02: [Brief Title]
--- Explanation: [Explanation here].
+-- Statement 02: Update user information.
+-- Explanation: The query updates a users information. The information is updated based off username, but can likewise be updated with userID.
 -- ----------------------------------------------------------------------------
--- [Insert SQL Statement 02 Here];
--- [Continue Statements 03 through 10...]
+UPDATE User
+SET firstName = 'Roland'
+WHERE username = 'rml';
+-- ----------------------------------------------------------------------------
+-- Statement 03: Deletes user information.
+-- Explanation: The query deletes the users information. The information is updated based off username, but can likewise be updated with userID.
+-- ----------------------------------------------------------------------------
+DELETE FROM User
+WHERE username = 'rml';
+-- ----------------------------------------------------------------------------
+-- Statement 04: Insert into User.
+-- Explanation: The query inserts a user into the database. 
+-- Containing values of username, passwordhash, isDriver, isManager, firstName, lastName, and birthday.
+-- ----------------------------------------------------------------------------
+INSERT INTO Car (licenseNumber, model, year, isModified, userID)
+VALUES ('234dsf23413', 'Mitsubishi Lancer', '2017', 1, 1);
+-- ----------------------------------------------------------------------------
+-- Statement 05: Update user information.
+-- Explanation: The query updates a users information. The information is updated based off carID.
+-- ----------------------------------------------------------------------------
+UPDATE Car
+SET licenseNumber = '23243ggg23432'
+WHERE carID = 1;
+-- ----------------------------------------------------------------------------
+-- Statement 06: Deletes user information.
+-- Explanation: The query deletes the users information. The information is updated based off username, but can likewise be updated with userID.
+-- ----------------------------------------------------------------------------
+DELETE FROM Car
+WHERE carID = 1;
+
+
+
 -- ============================================================================
 -- SECTION 2: INTERMEDIATE STATEMENTS (Roughly 10 Statements)
 -- Focus: Multi-table inner joins, left outer joins, aggregation with GROUP BY
