@@ -172,7 +172,7 @@ WHERE u.isDriver = 1
 GROUP BY u.userID, u.firstName, u.lastName;
 
 -- ----------------------------------------------------------------------------
--- Statement 12: Count managed events for each manager
+-- Statement xx: Count managed events for each manager
 -- Explanation: The left join connects each manager to the events they manage,
 -- including managers with no assigned events. Count calculates the total
 -- number of events managed by each user.
