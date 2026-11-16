@@ -396,18 +396,52 @@ SELECT DENSE_RANK() OVER (ORDER BY t.scoreTime ASC) AS 'Position', u.firstName |
 FROM time_cte AS t
 INNER JOIN User AS u on t.userID = u.userID
 INNER JOIN Car AS c on t.carID = c.carID
-ORDER BY t.scoreTime ASC
+ORDER BY t.scoreTime ASC;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: 
+-- Statement xx: Drivers that are better then average.
+-- Explanation: This statement uses three CTEs, the first one finds the run scoreTime,
+-- The second finds the users avg time, the third finds the average based off each
+-- user's avg. Then We take the distinct users that have runs greater then the avg_cte.
+-- ----------------------------------------------------------------------------
+
+WITH run_cte (runID, userID, scoreTime) AS (
+    SELECT r.runID, rg.userID, r.runTime - SUM(p.time)
+    FROM Run AS r
+    INNER JOIN RunPenalty rp ON r.runID = rp.runID
+    INNER JOIN Penalty p on rp.penaltyID = p.penaltyID
+    INNER JOIN Registration AS rg ON rg.registrationID = r.registrationID
+    WHERE rg.eventID = 1
+    GROUP BY r.runID
+),
+
+user_avg_cte (userID, avgTime) AS (
+    SELECT r.userID, AVG(r.scoreTime)
+    FROM run_cte AS r
+    GROUP BY r.userID
+),
+
+avg_cte (avgTime) AS (
+    SELECT AVG(a.avgTime)
+    FROM user_avg_cte AS a
+)
+
+Select DISTINCT u.firstName || ' ' || u.lastName AS 'Faster Then Avg'
+FROM run_cte AS a
+INNER JOIN User as u ON a.userID = u.userID
+WHERE a.scoreTime > (
+    SELECT avg.avgTime
+    FROM avg_cte AS avg
+);
+
+-- ----------------------------------------------------------------------------
+-- Statement xx: Drivers that are better then average.
 -- Explanation: 
 -- ----------------------------------------------------------------------------
--- Raul's Next One here.
 
 
 
 -- ----------------------------------------------------------------------------
-
 
 
 
