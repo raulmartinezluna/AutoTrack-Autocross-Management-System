@@ -451,3 +451,26 @@ WHERE a.scoreTime > (
 -- Statement xx: [Brief Title]
 -- Explanation: [1 to 2 sentences explaining the complex query/trigger logic].
 -- ----------------------------------------------------------------------------
+-- Statement xx: Find drivers with runs but no penalties
+-- Explanation: The cte collects completed runs with driver and event
+-- information. NOT EXISTS excludes drivers who have received penalties,
+-- while COUNT calculates their completed runs for each event.
+
+WITH DriverRuns AS (
+    SELECT u.userID, u.firstName, u.lastName, e.eventID, e.title, ru.runID
+    FROM User AS u INNER JOIN Registration AS r ON u.userID = r.userID
+    INNER JOIN Event AS e ON r.eventID = e.eventID
+    INNER JOIN Run AS ru ON r.registrationID = ru.registrationID
+    WHERE u.isDriver = 1 AND ru.runTime IS NOT NULL
+)
+
+SELECT d.title AS "Event Title", d.firstName || ' ' || d.lastName AS "Driver Name", COUNT(d.runID) AS "Total Runs Completed"
+FROM DriverRuns AS d
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Run AS ru2 INNER JOIN Registration AS r2 ON ru2.registrationID = r2.registrationID
+    INNER JOIN RunPenalty AS rp ON ru2.runID = rp.runID
+    WHERE r2.userID = d.userID
+)
+GROUP BY d.eventID, d.userID, d.title, d.firstName, d.lastName;
+
