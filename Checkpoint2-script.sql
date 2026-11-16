@@ -522,6 +522,7 @@ WITH RunCounts AS (
 SELECT title AS "Event Title", firstName || ' ' || lastName AS "Driver Name", runsUsed AS "Runs Used", numAttempts AS "Max Attempts", CASE WHEN runsUsed >= numAttempts THEN 'Limit Reached' ELSE 'Attempts Remaining' END AS "Attempt Status"
 FROM RunCounts;
 
+-- ----------------------------------------------------------------------------
 -- Statement xx: Calculate total penalty time for each run
 -- Explanation: The CTE joins runs with driver and penalty information,
 -- using SUM to calculate total penalty time and COALESCE to handle runs
