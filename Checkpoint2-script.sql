@@ -188,7 +188,18 @@ WHERE penaltyID = 11;
 -- ----------------------------------------------------------------------------
 DELETE FROM Penalty
 WHERE penaltyID = 5;
-
+-- ----------------------------------------------------------------------------
+-- Statement 19: Insert RunPenalty information.
+-- Explanation: The query inserts a row for RunPenalty. Containing values of runID, penaltyID.
+-- ----------------------------------------------------------------------------
+INSERT INTO RunPenalty (runID, penaltyID)
+VALUES (30, 4);
+-- ----------------------------------------------------------------------------
+-- Statement 20: Deletes RunPenalty information.
+-- Explanation: The query deletes the RunPenalty information. The information is deleted based off both runID, penaltyID.
+-- ----------------------------------------------------------------------------
+DELETE FROM RunPenalty
+WHERE runID = 30 AND penaltyID = 4;
 
 
 
