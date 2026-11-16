@@ -267,6 +267,7 @@ FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
 INNER JOIN Event AS e ON r.eventID = e.eventID
 INNER JOIN Car AS c ON r.carID = c.carID
 WHERE r.checkedIn = 1 AND e.eventID = 1;
+
 -- ----------------------------------------------------------------------------
 -- Statement xx: Count registered drivers for each event
 -- Explanation: The left join connects each event to its registrations,
@@ -277,6 +278,24 @@ SELECT e.eventID AS "Event ID", e.title AS "Event Title", e.date AS "Date", COUN
 FROM Event AS e LEFT JOIN Registration AS r ON e.eventID = r.eventID
 GROUP BY e.eventID, e.title, e.date;
 
+-- ----------------------------------------------------------------------------
+-- Statement 17: Find fastest raw run time for an event
+-- Explanation: The INNER JOIN connects runs to their registration, driver,
+-- event, and car information. The subquery finds the minimum raw run time
+-- for a specific event, including all runs tied for the fastest time.
+
+SELECT e.title AS "Event Title", u.firstName || ' ' || u.lastName AS "Driver Name", c.model AS "Car Model", ru.runNumber AS "Run Number", ru.runTime AS "Raw Time"
+FROM Run AS ru INNER JOIN Registration AS r ON ru.registrationID = r.registrationID
+INNER JOIN User AS u ON r.userID = u.userID
+INNER JOIN Event AS e ON r.eventID = e.eventID
+INNER JOIN Car AS c ON r.carID = c.carID
+WHERE e.eventID = 1
+    AND ru.runTime = (
+        SELECT MIN(ru2.runTime)
+        FROM Run AS ru2
+        INNER JOIN Registration AS r2 ON ru2.registrationID = r2.registrationID
+        WHERE r2.eventID = 1
+    );
 -- ----------------------------------------------------------------------------
 -- [Insert SQL Statement 11 Here];
 -- [Continue Statements 12 through 21...]
