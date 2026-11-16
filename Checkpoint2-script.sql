@@ -223,21 +223,37 @@ WHERE c.userID = 1;
 -- ----------------------------------------------------------------------------
 -- Statement xx: Display how many times a specific user's car has been registered.
 -- Explanation: Displays how many times a car has been registered used by a specific user.
--- Retrieves registration count, license number, model, year, and whether it is modified.
+-- LEFT JOINs (LEFT OUTER JOIN) Car and Registration in order to count event when a car has 0 registrations.
+-- Retrieves registration count, license number, model, year, and whether it is modified. Utilizes cases to provide specialized output.
+-- (LEFT OUTER JOIN)
 -- ----------------------------------------------------------------------------
 
-SELECT DISTINCT COUNT(c.carID) as 'Registrations', c.licenseNumber as "License Number", c.model as "Model", c.year as "Year", c.isModified as "Is Modified"
-FROM Car as c
-INNER JOIN Registration as r ON c.carID = r.carID
+SELECT DISTINCT COUNT(*) AS 'Registrations', c.licenseNumber AS "License Number", c.model AS "Model", c.year AS "Year", (CASE c.isModified WHEN 1 THEN 'Yes' WHEN 0 then 'NO' END) AS "Is Modified"
+FROM Car AS c
+LEFT JOIN Registration AS r ON c.carID = r.carID
 WHERE c.userID = 1
-group by c.model;
+GROUP BY c.carID;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Display car registration count.
--- Explanation: Displays how many times a car has been registered used by a specific user.
+-- Statement xx: Inserts Runs, but checks if the limit has been met or not.
+-- Explanation: Inserts into Runs, a run given that the a subquery that finds the
+-- current amount of runs based off registrationID is less then the number of attempts
+-- provided by the Event table (Scalar subqueries).
 -- ----------------------------------------------------------------------------
 
-
+INSERT INTO Run (runID, runTime, notes, runNumber, registrationID, userID)
+SELECT 31, 68.92, 'Good improvement', 3, 29, 8
+Where (
+    SELECT COUNT(*) 
+    FROM Run AS r
+    WHERE r.registrationID = 29
+) <= (
+    SELECT e.numAttempts
+    FROM Event as e
+    INNER JOIN registration r ON e.eventID = r.eventID
+    WHERE r.registrationID = 29
+    LIMIT 1
+);
 
 
 -- ----------------------------------------------------------------------------
@@ -333,7 +349,7 @@ WHERE e.eventID = 1
     );
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Find events with more than five registered drivers
+-- Statement xx: Find popular events with more than five registered drivers
 -- Explanation: The inner join connects each event to its registrations,
 -- while group by organizes the registrations by event. COUNT calculates
 -- the number of registrations, and HAVING filters for events with more than five.
@@ -353,6 +369,15 @@ HAVING COUNT(r.registrationID) > 5;
 -- window functions (ROW_NUMBER, DENSE_RANK), VIEW creation/querying,
 -- multi-condition triggers, and complex analytics.
 -- ============================================================================
+--Raul's (DELETE THIS LATER)
+
+
+
+
+
+
+-- Francisco's (DELETE THIS LATER)
+
 -- ----------------------------------------------------------------------------
 -- Statement 22: [Brief Title]
 -- Explanation: [1 to 2 sentences explaining the complex query/trigger logic].
