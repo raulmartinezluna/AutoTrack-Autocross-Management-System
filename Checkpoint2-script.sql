@@ -267,6 +267,15 @@ FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
 INNER JOIN Event AS e ON r.eventID = e.eventID
 INNER JOIN Car AS c ON r.carID = c.carID
 WHERE r.checkedIn = 1 AND e.eventID = 1;
+-- ----------------------------------------------------------------------------
+-- Statement xx: Count registered drivers for each event
+-- Explanation: The left join connects each event to its registrations,
+-- including events with no registered drivers. COUNT calculates the total
+-- number of registrations for each event.
+
+SELECT e.eventID AS "Event ID", e.title AS "Event Title", e.date AS "Date", COUNT(r.registrationID) AS "Registration Count"
+FROM Event AS e LEFT JOIN Registration AS r ON e.eventID = r.eventID
+GROUP BY e.eventID, e.title, e.date;
 
 -- ----------------------------------------------------------------------------
 -- [Insert SQL Statement 11 Here];
