@@ -245,6 +245,7 @@ FROM User AS u INNER JOIN Registration AS r ON u.userID = r.userID
 INNER JOIN Event AS e ON r.eventID = e.eventID
 WHERE u.userID = 1 AND u.isDriver = 1;
 
+-- ----------------------------------------------------------------------------
 -- Statement xx: Lists registrations of drivers not checked in
 -- Explanation: The inner join connects the Registration, User, and Event
 -- tables to display driver and event information. The where clause filters
@@ -254,6 +255,18 @@ SELECT r.registrationID AS "Registration ID", u.firstName || ' ' || u.lastName A
 FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
 INNER JOIN Event AS e ON r.eventID = e.eventID
 WHERE r.checkedIn = 0;
+
+-- ----------------------------------------------------------------------------
+-- Statement xx: Lists checked-In drivers for an Event
+-- Explanation: The inner join connects the Registration, User, Event, and Car
+-- tables to display driver, event, and car information. The where clause
+-- filters the results to only show checked-in drivers for a specific event.
+
+SELECT u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", c.model AS "Car Model", r.carClass AS "Car Class", r.checkedIn AS "Checked-In Status"
+FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
+INNER JOIN Event AS e ON r.eventID = e.eventID
+INNER JOIN Car AS c ON r.carID = c.carID
+WHERE r.checkedIn = 1 AND e.eventID = 1;
 
 -- ----------------------------------------------------------------------------
 -- [Insert SQL Statement 11 Here];
