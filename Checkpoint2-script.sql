@@ -474,3 +474,16 @@ WHERE NOT EXISTS (
 )
 GROUP BY d.eventID, d.userID, d.title, d.firstName, d.lastName;
 
+-- Statement xx: Generate event statistics using CTE
+-- Explanation: The cte joins events with their registrations and completed
+-- runs, then calculates driver counts and run statistics for each event.
+-- The main query displays the calculated statistics for every event.
+
+WITH EventStats AS (
+    SELECT e.eventID, e.title, COUNT(DISTINCT r.userID) AS driverCount, COUNT(ru.runID) AS totalRuns, MIN(ru.runTime) AS fastestTime, AVG(ru.runTime) AS averageTime, MAX(ru.runTime) AS slowestTime
+    FROM Event AS e LEFT JOIN Registration AS r ON e.eventID = r.eventID
+    LEFT JOIN Run AS ru ON r.registrationID = ru.registrationID AND ru.runTime IS NOT NULL
+    GROUP BY e.eventID, e.title
+)
+SELECT title AS "Event Title", driverCount AS "Driver Count", totalRuns AS "Total Runs", fastestTime AS "Fastest Time", averageTime AS "Average Time", slowestTime AS "Slowest Time"
+FROM EventStats;
