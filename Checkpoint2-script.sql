@@ -133,7 +133,7 @@ WHERE eventID = 6;
 -- ----------------------------------------------------------------------------
 -- Statement 10: Insert into Registration.
 -- Explanation: The query inserts a registration into the database. 
--- Containing values of .
+-- Containing values of userID, eventID, carID, registrationStatus, registrationDate, carClass, checkedIn.
 -- ----------------------------------------------------------------------------
 INSERT INTO Registration (userID, eventID, carID, registrationStatus, registrationDate, carClass, checkedIn)
 VALUES (8, 5, 8, 'Pending', '2026-11-12', 'Street', 0);
@@ -150,6 +150,21 @@ WHERE registrationID = 31;
 -- ----------------------------------------------------------------------------
 DELETE FROM Registration
 WHERE registrationID = 31;
+-- ----------------------------------------------------------------------------
+-- Statement 10: Insert row into ManagesEvent.
+-- Explanation: The query inserts a row for ManagesEvent into the database. 
+-- Containing values of userID, eventID.
+-- ----------------------------------------------------------------------------
+INSERT INTO ManagesEvent (userID, eventID)
+VALUES (8, 3);
+-- ----------------------------------------------------------------------------
+-- Statement 12: Delete ManagesEvent information.
+-- Explanation: The query deletes ManagesEvent information. The information is updated based off userID, eventID
+-- ----------------------------------------------------------------------------
+DELETE FROM ManagesEvent
+WHERE userID = 8 AND eventID = 3;
+
+
 
 
 
