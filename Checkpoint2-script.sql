@@ -293,16 +293,15 @@ INNER JOIN Event AS e ON r.eventID = e.eventID
 WHERE u.userID = 1 AND u.isDriver = 1;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Lists drivers not checked in with confirmed status.
--- Explanation: The inner join connects the Registration, User, and Event
--- tables to display driver and event information. The where clause filters
--- the results to only show registrations that have been confirmed and that have not been checked in.
+-- Statement xx: Lists drivers not checked in with confirmed status
+-- Explanation: Joins registrations with users and events to display
+-- all registrations that have not been checked in.
 -- ----------------------------------------------------------------------------
 
-SELECT u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", e.date AS "Date"
+SELECT r.registrationID AS "Registration ID", u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", e.date AS "Date", r.checkedIn AS "Checked-In Status"
 FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
 INNER JOIN Event AS e ON r.eventID = e.eventID
-WHERE r.registrationStatus = 'Confirmed' AND r.checkedIn = 0 AND e.eventID = 2;
+WHERE r.checkedIn = 0;
 
 -- ----------------------------------------------------------------------------
 -- Statement xx: Lists checked-In drivers for an Event
