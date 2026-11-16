@@ -242,7 +242,7 @@ GROUP BY c.carID;
 -- ----------------------------------------------------------------------------
 
 INSERT INTO Run (runID, runTime, notes, runNumber, registrationID, userID)
-SELECT 31, 68.92, 'Good improvement', 3, 29, 8
+SELECT 31, 68.92, 'Good improvement', 2, 29, 8
 Where (
     SELECT COUNT(*) 
     FROM Run AS r
@@ -370,8 +370,43 @@ HAVING COUNT(r.registrationID) > 5;
 -- multi-condition triggers, and complex analytics.
 -- ============================================================================
 --Raul's (DELETE THIS LATER)
+-- ----------------------------------------------------------------------------
+-- Statement xx: Position Leaderboard with the score time (raw time - penalties)
+-- Explanation: In this statement we utilize a CTE (CTE), time_cte, in order to find the
+-- userID, carID, scoreTime, rawTime, penaltyTime, runNumber of a specific event
+-- by the eventID. We do this through a variety of joins, where, and group by in 
+-- order to sum the penalties. Thereafter, we utilize the CTE in the main part
+-- Where we do more joins to find the User and the Car. We also to concatenate
+-- various variables as well as ordering it by the t.scoreTime. We also utilize
+-- a dense rank (DENSE_RANK) over the same order by nesuring that the positions are numbered
+-- and if there are any ties, that they recieve the same number.
+-- ----------------------------------------------------------------------------
+
+WITH time_cte (userID, carID, scoreTime, rawTime, penaltyTime, runNumber) AS (
+    SELECT r.userID, rg.carID, r.runTime-sum(p.time), r.runTime, sum(p.time), r.runNumber
+    FROM Registration rg
+    INNER JOIN Run r ON rg.registrationID = r.registrationID
+    INNER JOIN RunPenalty rp ON r.runID = rp.runID
+    INNER JOIN Penalty p on rp.penaltyID = p.penaltyID
+    WHERE eventID = 1
+    group by r.runID
+)
+
+SELECT DENSE_RANK() OVER (ORDER BY t.scoreTime ASC) AS 'Position', u.firstName || ' ' || u.lastName AS 'Name', c.year || ' '|| c.model AS 'Car', t.scoreTime AS 'Time', t.rawTime AS 'Raw Time', t.penaltyTime AS 'Time Deductions', t.runNumber AS 'Attempt Number'
+FROM time_cte AS t
+INNER JOIN User AS u on t.userID = u.userID
+INNER JOIN Car AS c on t.carID = c.carID
+ORDER BY t.scoreTime ASC
+
+-- ----------------------------------------------------------------------------
+-- Statement xx: 
+-- Explanation: 
+-- ----------------------------------------------------------------------------
+-- Raul's Next One here.
 
 
+
+-- ----------------------------------------------------------------------------
 
 
 
@@ -379,8 +414,6 @@ HAVING COUNT(r.registrationID) > 5;
 -- Francisco's (DELETE THIS LATER)
 
 -- ----------------------------------------------------------------------------
--- Statement 22: [Brief Title]
+-- Statement xx: [Brief Title]
 -- Explanation: [1 to 2 sentences explaining the complex query/trigger logic].
 -- ----------------------------------------------------------------------------
--- [Insert SQL Statement 22 Here];
--- [Continue 
