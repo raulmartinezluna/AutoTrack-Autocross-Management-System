@@ -474,6 +474,7 @@ WHERE NOT EXISTS (
 )
 GROUP BY d.eventID, d.userID, d.title, d.firstName, d.lastName;
 
+-- ----------------------------------------------------------------------------
 -- Statement xx: Generate event statistics using CTE
 -- Explanation: The cte joins events with their registrations and completed
 -- runs, then calculates driver counts and run statistics for each event.
@@ -487,3 +488,20 @@ WITH EventStats AS (
 )
 SELECT title AS "Event Title", driverCount AS "Driver Count", totalRuns AS "Total Runs", fastestTime AS "Fastest Time", averageTime AS "Average Time", slowestTime AS "Slowest Time"
 FROM EventStats;
+
+-- ----------------------------------------------------------------------------
+-- Statement xx: Rank driver runs by speed for an event
+-- Explanation: The CTE joins runs with driver and event information
+-- for a specific driver and event. ROW_NUMBER ranks the completed
+-- runs from fastest to slowest based on their raw run times.
+
+WITH DriverRuns AS (
+    SELECT e.title, u.firstName, u.lastName, ru.runNumber, ru.runTime, ru.runID
+    FROM Run AS ru INNER JOIN Registration AS r ON ru.registrationID = r.registrationID
+    INNER JOIN User AS u ON r.userID = u.userID
+    INNER JOIN Event AS e ON r.eventID = e.eventID
+    WHERE r.userID = 1 AND e.eventID = 1 AND ru.runTime IS NOT NULL
+)
+SELECT title AS "Event Title", firstName || ' ' || lastName AS "Driver Name", runNumber AS "Run Number", runTime AS "Raw Time",ROW_NUMBER() OVER ( ORDER BY runTime ASC, runID ASC) AS "Speed Ranking"
+FROM DriverRuns
+ORDER BY "Speed Ranking";
