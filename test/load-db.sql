@@ -7,4 +7,4 @@
 .import data/Registration.tbl Registration
 .import data/Penalty.tbl Penalty
 .import data/Run.tbl Run
-.import data/Run.tbl RunPenalty
+.import data/RunPenalty.tbl RunPenalty

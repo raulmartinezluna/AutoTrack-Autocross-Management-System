@@ -163,6 +163,13 @@ VALUES (8, 3);
 -- ----------------------------------------------------------------------------
 DELETE FROM ManagesEvent
 WHERE userID = 8 AND eventID = 3;
+-- ----------------------------------------------------------------------------
+-- Statement 13: Delete Run information if mistake occured.
+-- Explanation: The query deletes ManagesEvent information. The information is updated based off userID, eventID
+-- ----------------------------------------------------------------------------
+DELETE FROM Run
+WHERE runID = 31;
+
 
 
 
