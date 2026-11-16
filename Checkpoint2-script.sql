@@ -505,3 +505,20 @@ WITH DriverRuns AS (
 SELECT title AS "Event Title", firstName || ' ' || lastName AS "Driver Name", runNumber AS "Run Number", runTime AS "Raw Time",ROW_NUMBER() OVER ( ORDER BY runTime ASC, runID ASC) AS "Speed Ranking"
 FROM DriverRuns
 ORDER BY "Speed Ranking";
+
+-- ----------------------------------------------------------------------------
+-- Statement xx: Count Runs Used and Check Attempt Limit
+-- Explanation: The CTE counts the runs used by each registration and
+-- retrieves the maximum attempts allowed for the event. CASE determines
+-- whether the driver has reached the attempt limit.
+
+WITH RunCounts AS (
+    SELECT r.registrationID, e.title, u.firstName, u.lastName, e.numAttempts, COUNT(ru.runID) AS runsUsed
+    FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
+    INNER JOIN Event AS e ON r.eventID = e.eventID
+    LEFT JOIN Run AS ru ON r.registrationID = ru.registrationID
+    GROUP BY r.registrationID, e.title, u.firstName, u.lastName, e.numAttempts
+)
+SELECT title AS "Event Title", firstName || ' ' || lastName AS "Driver Name", runsUsed AS "Runs Used", numAttempts AS "Max Attempts", CASE WHEN runsUsed >= numAttempts THEN 'Limit Reached' ELSE 'Attempts Remaining' END AS "Attempt Status"
+FROM RunCounts;
+
