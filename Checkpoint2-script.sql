@@ -236,7 +236,7 @@ GROUP BY u.userID, u.firstName, u.lastName;
 
 -- ----------------------------------------------------------------------------
 -- Statement xx: Lists ever event registered by a driver
--- Explanation: The inner jin connects the User, Registration, and Event
+-- Explanation: The inner join connects the User, Registration, and Event
 -- tables to find events registered by a specific driver. The where clause
 -- filters the results to only show registrations for that driver.
 
@@ -244,6 +244,16 @@ SELECT u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Titl
 FROM User AS u INNER JOIN Registration AS r ON u.userID = r.userID
 INNER JOIN Event AS e ON r.eventID = e.eventID
 WHERE u.userID = 1 AND u.isDriver = 1;
+
+-- Statement xx: Lists registrations of drivers not checked in
+-- Explanation: The inner join connects the Registration, User, and Event
+-- tables to display driver and event information. The where clause filters
+-- the results to only show registrations that have not been checked in.
+
+SELECT r.registrationID AS "Registration ID", u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", e.date AS "Date", r.checkedIn AS "Checked-In Status"
+FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
+INNER JOIN Event AS e ON r.eventID = e.eventID
+WHERE r.checkedIn = 0;
 
 -- ----------------------------------------------------------------------------
 -- [Insert SQL Statement 11 Here];
