@@ -228,6 +228,7 @@ GROUP BY u.userID, u.firstName, u.lastName;
 -- Explanation: The left join connects each manager to the events they manage,
 -- including managers with no assigned events. Count calculates the total
 -- number of events managed by each user.
+-- ----------------------------------------------------------------------------
 
 SELECT u.userID AS "Manager ID", u.firstName AS "First Name", u.lastName AS "Last Name", COUNT(m.eventID) AS "Managed Event Count"
 FROM User AS u LEFT JOIN ManagesEvent AS m ON u.userID = m.userID
@@ -239,6 +240,7 @@ GROUP BY u.userID, u.firstName, u.lastName;
 -- Explanation: The inner join connects the User, Registration, and Event
 -- tables to find events registered by a specific driver. The where clause
 -- filters the results to only show registrations for that driver.
+-- ----------------------------------------------------------------------------
 
 SELECT u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", e.date AS "Date", e.location AS "Location", r.registrationStatus AS "Registration Status"
 FROM User AS u INNER JOIN Registration AS r ON u.userID = r.userID
@@ -250,6 +252,7 @@ WHERE u.userID = 1 AND u.isDriver = 1;
 -- Explanation: The inner join connects the Registration, User, and Event
 -- tables to display driver and event information. The where clause filters
 -- the results to only show registrations that have not been checked in.
+-- ----------------------------------------------------------------------------
 
 SELECT r.registrationID AS "Registration ID", u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", e.date AS "Date", r.checkedIn AS "Checked-In Status"
 FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
@@ -261,6 +264,7 @@ WHERE r.checkedIn = 0;
 -- Explanation: The inner join connects the Registration, User, Event, and Car
 -- tables to display driver, event, and car information. The where clause
 -- filters the results to only show checked-in drivers for a specific event.
+-- ----------------------------------------------------------------------------
 
 SELECT u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", c.model AS "Car Model", r.carClass AS "Car Class", r.checkedIn AS "Checked-In Status"
 FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
@@ -273,6 +277,7 @@ WHERE r.checkedIn = 1 AND e.eventID = 1;
 -- Explanation: The left join connects each event to its registrations,
 -- including events with no registered drivers. COUNT calculates the total
 -- number of registrations for each event.
+-- ----------------------------------------------------------------------------
 
 SELECT e.eventID AS "Event ID", e.title AS "Event Title", e.date AS "Date", COUNT(r.registrationID) AS "Registration Count"
 FROM Event AS e LEFT JOIN Registration AS r ON e.eventID = r.eventID
@@ -283,6 +288,7 @@ GROUP BY e.eventID, e.title, e.date;
 -- Explanation: The inner join connects runs to their registration, driver,
 -- event, and car information. The subquery finds the minimum raw run time
 -- for a specific event, including all runs tied for the fastest time.
+-- ----------------------------------------------------------------------------
 
 SELECT e.title AS "Event Title", u.firstName || ' ' || u.lastName AS "Driver Name", c.model AS "Car Model", ru.runNumber AS "Run Number", ru.runTime AS "Raw Time"
 FROM Run AS ru INNER JOIN Registration AS r ON ru.registrationID = r.registrationID
