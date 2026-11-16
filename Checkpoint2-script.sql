@@ -203,6 +203,14 @@ WHERE runID = 30 AND penaltyID = 4;
 
 
 
+-- Statement xx: (Raul)
+-- Explanation: Come back and Add
+-- ----------------------------------------------------------------------------
+SELECT c.carID as 'Car ID', c.licenseNumber as "License Number", c.model as "Model", c.year as "Year", c.isModified as "Is Modified"
+FROM Car as c
+WHERE c.userID = 1;
+-- ----------------------------------------------------------------------------
+
 
 
 
@@ -211,6 +219,27 @@ WHERE runID = 30 AND penaltyID = 4;
 -- Focus: Multi-table inner joins, left outer joins, aggregation with GROUP BY
 -- and HAVING, scalar subqueries, table aliasing, and conditional updates.
 -- ============================================================================
+
+-- ----------------------------------------------------------------------------
+-- Statement xx: Display how many times a specific user's car has been registered.
+-- Explanation: Displays how many times a car has been registered used by a specific user.
+-- Retrieves registration count, license number, model, year, and whether it is modified.
+-- ----------------------------------------------------------------------------
+
+SELECT DISTINCT COUNT(c.carID) as 'Registrations', c.licenseNumber as "License Number", c.model as "Model", c.year as "Year", c.isModified as "Is Modified"
+FROM Car as c
+INNER JOIN Registration as r ON c.carID = r.carID
+WHERE c.userID = 1
+group by c.model;
+
+-- ----------------------------------------------------------------------------
+-- Statement xx: Display car registration count.
+-- Explanation: Displays how many times a car has been registered used by a specific user.
+-- ----------------------------------------------------------------------------
+
+
+
+
 -- ----------------------------------------------------------------------------
 -- Statement xx: Count event registrations for each driver
 -- Explanation: The left join connects each user to their event registrations,
@@ -248,16 +277,16 @@ INNER JOIN Event AS e ON r.eventID = e.eventID
 WHERE u.userID = 1 AND u.isDriver = 1;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Lists registrations of drivers not checked in
+-- Statement xx: Lists drivers not checked in with confirmed status.
 -- Explanation: The inner join connects the Registration, User, and Event
 -- tables to display driver and event information. The where clause filters
--- the results to only show registrations that have not been checked in.
+-- the results to only show registrations that have been confirmed and that have not been checked in.
 -- ----------------------------------------------------------------------------
 
-SELECT r.registrationID AS "Registration ID", u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", e.date AS "Date", r.checkedIn AS "Checked-In Status"
+SELECT u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", e.date AS "Date"
 FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
 INNER JOIN Event AS e ON r.eventID = e.eventID
-WHERE r.checkedIn = 0;
+WHERE r.registrationStatus = 'Confirmed' AND r.checkedIn = 0 AND e.eventID = 2;
 
 -- ----------------------------------------------------------------------------
 -- Statement xx: Lists checked-In drivers for an Event
@@ -266,7 +295,7 @@ WHERE r.checkedIn = 0;
 -- filters the results to only show checked-in drivers for a specific event.
 -- ----------------------------------------------------------------------------
 
-SELECT u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", c.model AS "Car Model", r.carClass AS "Car Class", r.checkedIn AS "Checked-In Status"
+SELECT u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", c.model AS "Car Model", r.carClass AS "Car Class"
 FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
 INNER JOIN Event AS e ON r.eventID = e.eventID
 INNER JOIN Car AS c ON r.carID = c.carID
