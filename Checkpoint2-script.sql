@@ -151,24 +151,43 @@ WHERE registrationID = 31;
 DELETE FROM Registration
 WHERE registrationID = 31;
 -- ----------------------------------------------------------------------------
--- Statement 10: Insert row into ManagesEvent.
+-- Statement 13: Insert row into ManagesEvent.
 -- Explanation: The query inserts a row for ManagesEvent into the database. 
 -- Containing values of userID, eventID.
 -- ----------------------------------------------------------------------------
 INSERT INTO ManagesEvent (userID, eventID)
 VALUES (8, 3);
 -- ----------------------------------------------------------------------------
--- Statement 12: Delete ManagesEvent information.
+-- Statement 14: Delete ManagesEvent information.
 -- Explanation: The query deletes ManagesEvent information. The information is updated based off userID, eventID
 -- ----------------------------------------------------------------------------
 DELETE FROM ManagesEvent
 WHERE userID = 8 AND eventID = 3;
 -- ----------------------------------------------------------------------------
--- Statement 13: Delete Run information if mistake occured.
+-- Statement 15: Delete Run information if mistake occured.
 -- Explanation: The query deletes ManagesEvent information. The information is updated based off userID, eventID
 -- ----------------------------------------------------------------------------
 DELETE FROM Run
 WHERE runID = 31;
+-- ----------------------------------------------------------------------------
+-- Statement 16: Insert penalty information.
+-- Explanation: The query inserts a row for penalties. Containing values of time (penalty time), description.
+-- ----------------------------------------------------------------------------
+INSERT INTO Penalty (time, description)
+VALUES (25, 'Oil');
+-- ----------------------------------------------------------------------------
+-- Statement 17: Update penalty information.
+-- Explanation: The query updates penalty information. The information is updated based off penaltyID.
+-- ----------------------------------------------------------------------------
+UPDATE Penalty
+SET description = 'Leaked oil.'
+WHERE penaltyID = 11;
+-- ----------------------------------------------------------------------------
+-- Statement 18: Deletes penalty information.
+-- Explanation: The query deletes the penalty information. The information is updated based off penaltyID.
+-- ----------------------------------------------------------------------------
+DELETE FROM Penalty
+WHERE penaltyID = 5;
 
 
 
