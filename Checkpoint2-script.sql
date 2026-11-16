@@ -279,8 +279,8 @@ FROM Event AS e LEFT JOIN Registration AS r ON e.eventID = r.eventID
 GROUP BY e.eventID, e.title, e.date;
 
 -- ----------------------------------------------------------------------------
--- Statement 17: Find fastest raw run time for an event
--- Explanation: The INNER JOIN connects runs to their registration, driver,
+-- Statement xx: Find fastest raw run time for an event
+-- Explanation: The inner join connects runs to their registration, driver,
 -- event, and car information. The subquery finds the minimum raw run time
 -- for a specific event, including all runs tied for the fastest time.
 
@@ -296,6 +296,18 @@ WHERE e.eventID = 1
         INNER JOIN Registration AS r2 ON ru2.registrationID = r2.registrationID
         WHERE r2.eventID = 1
     );
+
+-- ----------------------------------------------------------------------------
+-- Statement xx: Find events with more than five registered drivers
+-- Explanation: The inner join connects each event to its registrations,
+-- while group by organizes the registrations by event. COUNT calculates
+-- the number of registrations, and HAVING filters for events with more than five.
+
+SELECT e.eventID AS "Event ID", e.title AS "Event Title", e.date AS "Date", COUNT(r.registrationID) AS "Registration Count"
+FROM Event AS e INNER JOIN Registration AS r ON e.eventID = r.eventID
+GROUP BY e.eventID, e.title, e.date
+HAVING COUNT(r.registrationID) > 5;
+
 -- ----------------------------------------------------------------------------
 -- [Insert SQL Statement 11 Here];
 -- [Continue Statements 12 through 21...]
