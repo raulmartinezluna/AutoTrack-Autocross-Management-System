@@ -207,19 +207,25 @@ WHERE runID = 30 AND penaltyID = 4;
 -- Explanation: 
 -- ----------------------------------------------------------------------------
 
-
 -- ----------------------------------------------------------------------------
 -- Statement 22: List Events by orderDate, that have already passed
 -- Explanation: 
 -- ----------------------------------------------------------------------------
 
 -- ----------------------------------------------------------------------------
--- Statement 23: List Events by orderDate, that have already passed
--- Explanation: List managers at a specific event
+-- Statement 23: List managers at a specific event
+-- Explanation: This query retrieves all managers at by a specific event via the
+-- eventID. It displays each the name of the event Managers
 -- ----------------------------------------------------------------------------
-
+SELECT u.firstName || ' ' || u.lastName AS 'Managers At Event'
+FROM ManagesEvent m
+INNER JOIN User u ON m.userID = u.userID
+WHERE m.eventID = 1;
+-- ----------------------------------------------------------------------------
 -- Statement 24: List cars owned by a specific user.
--- Explanation: Come back and Add
+-- Explanation: This query retrieves all cars owned by a specific user via their
+-- userID. It displays each car's ID, license number, model, year, and modification
+-- status.
 -- ----------------------------------------------------------------------------
 SELECT c.carID as 'Car ID', c.licenseNumber as "License Number", c.model as "Model", c.year as "Year", c.isModified as "Is Modified"
 FROM Car as c
