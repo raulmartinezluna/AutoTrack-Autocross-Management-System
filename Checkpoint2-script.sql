@@ -261,7 +261,18 @@ WHERE c.userID = 1;
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Display how many times a specific user's car has been registered.
+-- Statement 25: List pending registrations for a given event.
+-- Explanation: From Registration we do a multi table join with User and Car and
+-- we check if its the given eventID and whether it's status is pending. Then
+-- we showcase the name, car, and class.
+-- ----------------------------------------------------------------------------
+SELECT u.firstName || ' ' || u.lastName AS 'Applicant', c.year || ' ' || c.model as 'Car', r.carClass 'Class'
+FROM Registration r
+INNER JOIN User u ON u.userID = r.userID
+INNER JOIN Car c ON c.carID = r.carID
+WHERE r.eventID = 3 AND r.registrationStatus = 'Pending';
+-- ----------------------------------------------------------------------------
+-- Statement 26: Display how many times a specific user's car has been registered.
 -- Explanation: Displays how many times a car has been registered used by a specific user.
 -- LEFT JOINs (LEFT OUTER JOIN) Car and Registration in order to count event when a car has 0 registrations.
 -- Retrieves registration count, license number, model, year, and whether it is modified. Utilizes cases to provide specialized output.
@@ -273,7 +284,7 @@ LEFT JOIN Registration AS r ON c.carID = r.carID
 WHERE c.userID = 1
 GROUP BY c.carID;
 -- ----------------------------------------------------------------------------
--- Statement xx: Inserts Runs, but checks if the limit has been met or not.
+-- Statement 27: Inserts Runs, but checks if the limit has been met or not.
 -- Explanation: Inserts into Runs, a run given that the a subquery that finds the
 -- current amount of runs based off registrationID is less then the number of attempts
 -- provided by the Event table (Scalar subqueries).
@@ -292,7 +303,7 @@ Where (
     LIMIT 1
 );
 -- ----------------------------------------------------------------------------
--- Statement xx: Count event registrations for each driver
+-- Statement 28: Count event registrations for each driver
 -- Explanation: The left join connects each user to their event registrations,
 -- keeping all users even if they have no registrations. The WHERE clause filters
 -- the results to only users registered as drivers, while COUNT calculates their
@@ -304,7 +315,7 @@ WHERE u.isDriver = 1
 GROUP BY u.userID, u.firstName, u.lastName;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Count managed events for each manager
+-- Statement 29: Count managed events for each manager
 -- Explanation: The left join connects each manager to the events they manage,
 -- including managers with no assigned events. Count calculates the total
 -- number of events managed by each user.
@@ -316,7 +327,7 @@ WHERE u.isManager = 1
 GROUP BY u.userID, u.firstName, u.lastName;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Lists ever event registered by a driver
+-- Statement 30: Lists ever event registered by a driver
 -- Explanation: The inner join connects the User, Registration, and Event
 -- tables to find events registered by a specific driver. The where clause
 -- filters the results to only show registrations for that driver.
@@ -328,7 +339,7 @@ INNER JOIN Event AS e ON r.eventID = e.eventID
 WHERE u.userID = 1 AND u.isDriver = 1;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Lists drivers not checked in with confirmed status
+-- Statement 31: Lists drivers not checked in with confirmed status
 -- Explanation: Joins registrations with users and events to display
 -- all registrations that have not been checked in.
 -- ----------------------------------------------------------------------------
@@ -339,7 +350,7 @@ INNER JOIN Event AS e ON r.eventID = e.eventID
 WHERE r.checkedIn = 0;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Lists checked-In drivers for an Event
+-- Statement 32: Lists checked-In drivers for an Event
 -- Explanation: The inner join connects the Registration, User, Event, and Car
 -- tables to display driver, event, and car information. The where clause
 -- filters the results to only show checked-in drivers for a specific event.
@@ -352,7 +363,7 @@ INNER JOIN Car AS c ON r.carID = c.carID
 WHERE r.checkedIn = 1 AND e.eventID = 1;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Count registered drivers for each event
+-- Statement 33: Count registered drivers for each event
 -- Explanation: The left join connects each event to its registrations,
 -- including events with no registered drivers. COUNT calculates the total
 -- number of registrations for each event.
@@ -363,7 +374,7 @@ FROM Event AS e LEFT JOIN Registration AS r ON e.eventID = r.eventID
 GROUP BY e.eventID, e.title, e.date;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Find fastest raw run time for an event
+-- Statement 34: Find fastest raw run time for an event
 -- Explanation: The inner join connects runs to their registration, driver,
 -- event, and car information. The subquery finds the minimum raw run time
 -- for a specific event, including all runs tied for the fastest time.
@@ -383,7 +394,7 @@ WHERE e.eventID = 1
     );
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Find popular events with more than five registered drivers
+-- Statement 35: Find popular events with more than five registered drivers
 -- Explanation: The inner join connects each event to its registrations,
 -- while group by organizes the registrations by event. COUNT calculates
 -- the number of registrations, and HAVING filters for events with more than five.
