@@ -23,43 +23,43 @@
 -- below. Each statement must sum to 100% across the 2 team members.
 --
 -- SECTION 1: SIMPLE STATEMENTS
--- Statement 01: Raul Martinez Luna 100%
--- Statement 02: Raul Martinez Luna 100%
--- Statement 03: Raul Martinez Luna 100%
--- Statement 04: Raul Martinez Luna 100%
--- Statement 05: Raul Martinez Luna 100%
--- Statement 06: Raul Martinez Luna 100%
--- Statement 07: Raul Martinez Luna 100%
--- Statement 08: Raul Martinez Luna 100%
--- Statement 09: Raul Martinez Luna 100%
--- Statement 10: Raul Martinez Luna 100%
--- Statement 11: Raul Martinez Luna 100%
--- Statement 12: Raul Martinez Luna 100%
--- Statement 13: Raul Martinez Luna 100%
--- Statement 14: Raul Martinez Luna 100%
--- Statement 15: Raul Martinez Luna 100%
--- Statement 16: Raul Martinez Luna 100%
--- Statement 17: Raul Martinez Luna 100%
--- Statement 18: Raul Martinez Luna 100%
--- Statement 19: Raul Martinez Luna 100%
--- Statement 20: Raul Martinez Luna 100%
--- Statement 21: Raul Martinez Luna 100%
--- Statement 22: Raul Martinez Luna 100%
--- Statement 23: Raul Martinez Luna 100%
--- Statement 24: Raul Martinez Luna 100%
+-- Statement 01: Raul Martinez Luna: 100%
+-- Statement 02: Raul Martinez Luna: 100%
+-- Statement 03: Raul Martinez Luna: 100%
+-- Statement 04: Raul Martinez Luna: 100%
+-- Statement 05: Raul Martinez Luna: 100%
+-- Statement 06: Raul Martinez Luna: 100%
+-- Statement 07: Raul Martinez Luna: 100%
+-- Statement 08: Raul Martinez Luna: 100%
+-- Statement 09: Raul Martinez Luna: 100%
+-- Statement 10: Raul Martinez Luna: 100%
+-- Statement 11: Raul Martinez Luna: 100%
+-- Statement 12: Raul Martinez Luna: 100%
+-- Statement 13: Raul Martinez Luna: 100%
+-- Statement 14: Raul Martinez Luna: 100%
+-- Statement 15: Raul Martinez Luna: 100%
+-- Statement 16: Raul Martinez Luna: 100%
+-- Statement 17: Raul Martinez Luna: 100%
+-- Statement 18: Raul Martinez Luna: 100%
+-- Statement 19: Raul Martinez Luna: 100%
+-- Statement 20: Raul Martinez Luna: 100%
+-- Statement 21: Raul Martinez Luna: 100%
+-- Statement 22: Raul Martinez Luna: 100%
+-- Statement 23: Raul Martinez Luna: 100%
+-- Statement 24: Raul Martinez Luna: 100%
 --
 -- SECTION 2: INTERMEDIATE STATEMENTS
--- Statement 11: [Member 1]: XX%, [Member 2]: XX%
--- Statement 12: [Member 1]: XX%, [Member 2]: XX%
--- Statement 13: [Member 1]: XX%, [Member 2]: XX%
--- Statement 14: [Member 1]: XX%, [Member 2]: XX%
--- Statement 15: [Member 1]: XX%, [Member 2]: XX%
--- Statement 16: [Member 1]: XX%, [Member 2]: XX%
--- Statement 17: [Member 1]: XX%, [Member 2]: XX%
--- Statement 18: [Member 1]: XX%, [Member 2]: XX%
--- Statement 19: [Member 1]: XX%, [Member 2]: XX%
--- Statement 20: [Member 1]: XX%, [Member 2]: XX%
--- Statement 21: [Member 1]: XX%, [Member 2]: XX%
+-- Statement 25: Raul Martinez Luna: 100%
+-- Statement 26: Raul Martinez Luna: 100%
+-- Statement 27: Raul Martinez Luna: 100%
+-- Statement 28: Fransisco Arreola: 100%
+-- Statement 29: Fransisco Arreola: 100%
+-- Statement 30: Fransisco Arreola: 100%
+-- Statement 31: Fransisco Arreola: 100%
+-- Statement 32: Fransisco Arreola: 100%
+-- Statement 33: Fransisco Arreola: 100%
+-- Statement 34: Fransisco Arreola: 100%
+-- Statement 35: Fransisco Arreola: 100%
 --
 -- SECTION 3: COMPLEX STATEMENTS
 -- Statement 22: [Member 1]: XX%, [Member 2]: XX%
