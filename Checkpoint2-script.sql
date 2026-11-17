@@ -13,8 +13,8 @@
 -- explicitly state: "No modifications made to the Checkpoint 1 schema."
 --
 -- Modifications:
--- 1. Changed tuple under User table from password to passwordhash.
--- 2. Changed tuple under User table from 
+-- 1. Renamed column from password to passwordhash in User table.
+-- 2. Renamed column from Birthday to birthday in User table.
 -- ============================================================================
 -- ============================================================================
 -- MEMBER CONTRIBUTIONS SUMMARY (GROUPED AT THE TOP)
