@@ -368,7 +368,6 @@ HAVING COUNT(r.registrationID) > 5;
 -- window functions (ROW_NUMBER, DENSE_RANK), VIEW creation/querying,
 -- multi-condition triggers, and complex analytics.
 -- ============================================================================
---Raul's (DELETE THIS LATER)
 -- ----------------------------------------------------------------------------
 -- Statement xx: Position Leaderboard with the score time (raw time - penalties)
 -- Explanation: In this statement we utilize a CTE (CTE), time_cte, in order to find the
@@ -466,7 +465,35 @@ SELECT u.firstName || ' ' || u.lastName AS 'Always Improving'
 FROM improved_cte AS r
 INNER JOIN User as u ON r.userID = u.userID;
 
+-- ----------------------------------------------------------------------------
+-- Statement xx: Rank Drivers for a given event based off the delta of their best and worst run.
+-- Explanation: 
+-- ----------------------------------------------------------------------------
 
+WITH run_cte (runID, userID, scoreTime) AS (
+    SELECT r.runID, rg.userID, r.runTime + COALESCE(SUM(p.time), 0)
+    FROM Run AS r
+    LEFT JOIN RunPenalty rp ON r.runID = rp.runID
+    LEFT JOIN Penalty p on rp.penaltyID = p.penaltyID
+    INNER JOIN Registration AS rg ON rg.registrationID = r.registrationID
+    WHERE rg.eventID = 1
+    GROUP BY r.runID
+),
+
+min_max_cte(userID, fastest, slowest) AS (
+    SELECT r.userID, MIN(r.scoreTime), MAX(r.scoreTime)
+    FROM run_cte AS r
+    GROUP BY r.userID
+)
+
+SELECT u.firstName || ' ' || u.lastName AS 'Name', m.fastest AS 'Best Run', m.slowest AS 'Worst Run', ROUND(-(m.fastest - m.slowest), 3) AS 'Delta'
+FROM min_max_cte m
+INNER JOIN User AS u ON m.userID = u.userID;
+
+-- ----------------------------------------------------------------------------
+-- Statement xx: Rank Drivers for a given event based off the delta of their first and last run.
+-- Explanation: 
+-- ----------------------------------------------------------------------------
 
 
 -- ----------------------------------------------------------------------------
@@ -505,7 +532,7 @@ WITH EventStats AS (
     LEFT JOIN Run AS ru ON r.registrationID = ru.registrationID AND ru.runTime IS NOT NULL
     GROUP BY e.eventID, e.title
 )
-SELECT title AS "Event Title", driverCount AS "Driver Count", totalRuns AS "Total Runs", fastestTime AS "Fastest Time", averageTime AS "Average Time", slowestTime AS "Slowest Time"
+SELECT title AS "Event Title", driverCount AS "Driver Count", totalRuns AS "Total Runs", fastestTime AS "Fastest Time", ROUND(averageTime, 4) AS "Average Time", slowestTime AS "Slowest Time"
 FROM EventStats;
 
 -- ----------------------------------------------------------------------------
