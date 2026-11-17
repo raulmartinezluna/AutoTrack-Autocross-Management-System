@@ -70,6 +70,7 @@ PRAGMA foreign_keys = ON;
 -- Focus: Single-table projections/filters, simple inserts/updates/deletes,
 -- basic sorting, simple aggregate functions, and pattern matching.
 -- ============================================================================
+
 -- ----------------------------------------------------------------------------
 -- Statement 01: Insert into User.
 -- Explanation: The query inserts a user into the database. 
@@ -201,17 +202,28 @@ VALUES (30, 4);
 DELETE FROM RunPenalty
 WHERE runID = 30 AND penaltyID = 4;
 
+-- ----------------------------------------------------------------------------
+-- Statement 21: List Events by orderDate, exclude dates past currentTime
+-- Explanation: 
+-- ----------------------------------------------------------------------------
 
 
--- Statement xx: (Raul)
+-- ----------------------------------------------------------------------------
+-- Statement 22: List Events by orderDate, that have already passed
+-- Explanation: 
+-- ----------------------------------------------------------------------------
+
+-- ----------------------------------------------------------------------------
+-- Statement 23: List Events by orderDate, that have already passed
+-- Explanation: List managers at a specific event
+-- ----------------------------------------------------------------------------
+
+-- Statement 24: List cars owned by a specific user.
 -- Explanation: Come back and Add
 -- ----------------------------------------------------------------------------
 SELECT c.carID as 'Car ID', c.licenseNumber as "License Number", c.model as "Model", c.year as "Year", c.isModified as "Is Modified"
 FROM Car as c
 WHERE c.userID = 1;
--- ----------------------------------------------------------------------------
-
-
 
 
 -- ============================================================================
@@ -227,20 +239,17 @@ WHERE c.userID = 1;
 -- Retrieves registration count, license number, model, year, and whether it is modified. Utilizes cases to provide specialized output.
 -- (LEFT OUTER JOIN)
 -- ----------------------------------------------------------------------------
-
 SELECT DISTINCT COUNT(*) AS 'Registrations', c.licenseNumber AS "License Number", c.model AS "Model", c.year AS "Year", (CASE c.isModified WHEN 1 THEN 'Yes' WHEN 0 then 'NO' END) AS "Is Modified"
 FROM Car AS c
 LEFT JOIN Registration AS r ON c.carID = r.carID
 WHERE c.userID = 1
 GROUP BY c.carID;
-
 -- ----------------------------------------------------------------------------
 -- Statement xx: Inserts Runs, but checks if the limit has been met or not.
 -- Explanation: Inserts into Runs, a run given that the a subquery that finds the
 -- current amount of runs based off registrationID is less then the number of attempts
 -- provided by the Event table (Scalar subqueries).
 -- ----------------------------------------------------------------------------
-
 INSERT INTO Run (runID, runTime, notes, runNumber, registrationID, userID)
 SELECT 31, 68.92, 'Good improvement', 2, 29, 8
 Where (
@@ -254,8 +263,6 @@ Where (
     WHERE r.registrationID = 29
     LIMIT 1
 );
-
-
 -- ----------------------------------------------------------------------------
 -- Statement xx: Count event registrations for each driver
 -- Explanation: The left join connects each user to their event registrations,
@@ -358,9 +365,7 @@ FROM Event AS e INNER JOIN Registration AS r ON e.eventID = r.eventID
 GROUP BY e.eventID, e.title, e.date
 HAVING COUNT(r.registrationID) > 5;
 
--- ----------------------------------------------------------------------------
--- [Insert SQL Statement 11 Here];
--- [Continue Statements 12 through 21...]
+
 -- ============================================================================
 -- SECTION 3: COMPLEX STATEMENTS (Roughly 10 Statements)
 -- Focus: Correlated subqueries (EXISTS/NOT EXISTS), set operations
@@ -368,6 +373,7 @@ HAVING COUNT(r.registrationID) > 5;
 -- window functions (ROW_NUMBER, DENSE_RANK), VIEW creation/querying,
 -- multi-condition triggers, and complex analytics.
 -- ============================================================================
+
 -- ----------------------------------------------------------------------------
 -- Statement xx: Position Leaderboard with the score time (raw time + penalties)
 -- Explanation: In this statement we utilize a CTE (CTE), time_cte, in order to find the
