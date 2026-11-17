@@ -429,7 +429,7 @@ HAVING COUNT(r.registrationID) > 5;
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Position Leaderboard with the score time (raw time + penalties)
+-- Statement 36: Position Leaderboard with the score time (raw time + penalties)
 -- Explanation: In this statement we utilize a CTE (CTE), time_cte, in order to find the
 -- userID, carID, scoreTime, rawTime, penaltyTime, runNumber of a specific event
 -- by the eventID. We do this through a variety of joins, where, and group by in 
@@ -439,7 +439,6 @@ HAVING COUNT(r.registrationID) > 5;
 -- a dense rank (DENSE_RANK) over the same order by nesuring that the positions are numbered
 -- and if there are any ties, that they recieve the same number.
 -- ----------------------------------------------------------------------------
-
 WITH time_cte (userID, carID, scoreTime, rawTime, penaltyTime, runNumber) AS (
     SELECT r.userID, rg.carID, r.runTime+COALESCE(SUM(p.time), 0), r.runTime, COALESCE(SUM(p.time), 0), r.runNumber
     FROM Registration rg
@@ -457,12 +456,11 @@ INNER JOIN Car AS c on t.carID = c.carID
 ORDER BY t.scoreTime ASC;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Drivers that are better then average.
+-- Statement 37: Drivers that are better then average.
 -- Explanation: This statement uses three CTEs, the first one finds the run scoreTime,
 -- The second finds the users avg time, the third finds the average based off each
 -- user's avg. Then We take the distinct users that have runs greater then the avg_cte.
 -- ----------------------------------------------------------------------------
-
 WITH run_cte (runID, userID, scoreTime) AS (
     SELECT r.runID, rg.userID, r.runTime + COALESCE(SUM(p.time), 0)
     FROM Run AS r
@@ -493,7 +491,7 @@ WHERE a.scoreTime > (
 );
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Drivers that continually improved for every lap given an eventID.
+-- Statement 38: Drivers that continually improved for every lap given an eventID.
 -- Explanation: Utilizing run_cte to find runs and their appropriate time (raw time + penalty time)
 -- given penalties and the subsequent improve_cte checks if the runs continually
 -- improve via Having and NOT EXIST statements. Then we output the names of the users
@@ -526,14 +524,13 @@ FROM improved_cte AS r
 INNER JOIN User as u ON r.userID = u.userID;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Rank Drivers for a given event based off the delta of their best and worst run.
+-- Statement 39: Rank Drivers for a given event based off the delta of their best and worst run.
 -- Explanation: Using run_cte we find the scoreTime (raw time + penalty time) at
 -- a given eventID then use min_max_cte to find the min and max run for a given
 -- user then in the main statement we use min_max_cte with an INNER JOIN for user
 -- then list out the user according to their higher value delta's and use DENSE_RANK
 -- to determine position numbers along with other values to return.
 -- ----------------------------------------------------------------------------
-
 WITH run_cte (runID, userID, scoreTime) AS (
     SELECT r.runID, rg.userID, r.runTime + COALESCE(SUM(p.time), 0)
     FROM Run AS r
@@ -556,7 +553,7 @@ INNER JOIN User AS u ON m.userID = u.userID
 ORDER BY ROUND(-(m.fastest - m.slowest), 3) DESC;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Rank Drivers for a given event based off the delta of their first and last run.
+-- Statement 40: Rank Drivers for a given event based off the delta of their first and last run.
 -- Explanation: Using run_cte we find the scoreTime (raw time + penalty time) at
 -- a given eventID then use first_last (CTE) to find the min and max runNum for a given
 -- user then in the main statement we use min_max_cte with an INNER JOIN for user and
@@ -564,7 +561,6 @@ ORDER BY ROUND(-(m.fastest - m.slowest), 3) DESC;
 -- higher value delta's and use DENSE_RANK to determine position numbers along with other
 -- values to return.
 -- ----------------------------------------------------------------------------
-
 WITH run_cte (runID, userID, scoreTime, runNum) AS (
     SELECT r.runID, rg.userID, r.runTime + COALESCE(SUM(p.time), 0), r.runNumber
     FROM Run AS r
@@ -590,11 +586,11 @@ ORDER BY ROUND(-(r2.scoreTime - r1.scoreTime), 3) DESC;
 
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Find drivers with runs but no penalties
+-- Statement 41: Find drivers with runs but no penalties
 -- Explanation: The cte collects completed runs with driver and event
 -- information. NOT EXISTS excludes drivers who have received penalties,
 -- while COUNT calculates their completed runs for each event.
-
+-- ----------------------------------------------------------------------------
 WITH DriverRuns AS (
     SELECT u.userID, u.firstName, u.lastName, e.eventID, e.title, ru.runID
     FROM User AS u INNER JOIN Registration AS r ON u.userID = r.userID
@@ -614,11 +610,11 @@ WHERE NOT EXISTS (
 GROUP BY d.eventID, d.userID, d.title, d.firstName, d.lastName;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Generate event statistics using CTE
+-- Statement 42: Generate event statistics using CTE
 -- Explanation: The cte joins events with their registrations and completed
 -- runs, then calculates driver counts and run statistics for each event.
 -- The main query displays the calculated statistics for every event.
-
+-- ----------------------------------------------------------------------------
 WITH EventStats AS (
     SELECT e.eventID, e.title, COUNT(DISTINCT r.userID) AS driverCount, COUNT(ru.runID) AS totalRuns, MIN(ru.runTime) AS fastestTime, AVG(ru.runTime) AS averageTime, MAX(ru.runTime) AS slowestTime
     FROM Event AS e LEFT JOIN Registration AS r ON e.eventID = r.eventID
@@ -629,11 +625,11 @@ SELECT title AS "Event Title", driverCount AS "Driver Count", totalRuns AS "Tota
 FROM EventStats;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Rank driver runs by speed for an event
+-- Statement 43: Rank driver runs by speed for an event
 -- Explanation: The CTE joins runs with driver and event information
 -- for a specific driver and event. ROW_NUMBER ranks the completed
 -- runs from fastest to slowest based on their raw run times.
-
+-- ----------------------------------------------------------------------------
 WITH DriverRuns AS (
     SELECT e.title, u.firstName, u.lastName, ru.runNumber, ru.runTime, ru.runID
     FROM Run AS ru INNER JOIN Registration AS r ON ru.registrationID = r.registrationID
@@ -646,11 +642,11 @@ FROM DriverRuns
 ORDER BY "Speed Ranking";
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Count Runs Used and Check Attempt Limit
+-- Statement 44: Count Runs Used and Check Attempt Limit
 -- Explanation: The CTE counts the runs used by each registration and
 -- retrieves the maximum attempts allowed for the event. CASE determines
 -- whether the driver has reached the attempt limit.
-
+-- ----------------------------------------------------------------------------
 WITH RunCounts AS (
     SELECT r.registrationID, e.title, u.firstName, u.lastName, e.numAttempts, COUNT(ru.runID) AS runsUsed
     FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
@@ -662,10 +658,11 @@ SELECT title AS "Event Title", firstName || ' ' || lastName AS "Driver Name", ru
 FROM RunCounts;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Rank cars by best performance within each class
+-- Statement 45: Rank cars by best performance within each class
 -- Explanation: The cte calculates each car's best adjusted run time
 -- for the given event. DENSE_RANK ranks cars from fastest to slowest
 -- within their carClass, restarting the ranking for each class.
+-- ----------------------------------------------------------------------------
 WITH CarPerformance AS (
     SELECT r.carClass, u.firstName, u.lastName, c.year, c.model, c.carID, MIN(ru.runTime - COALESCE(pen.penaltyTime, 0)) AS bestTime
     FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
@@ -683,4 +680,3 @@ WITH CarPerformance AS (
 SELECT DENSE_RANK() OVER (PARTITION BY carClass ORDER BY bestTime ASC) AS "Rank", firstName || ' ' || lastName AS "Name", year || ' ' || model AS "Year + Model", carClass
 FROM CarPerformance
 ORDER BY carClass, "Rank";
-
