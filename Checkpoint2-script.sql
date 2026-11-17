@@ -317,7 +317,7 @@ WHERE r.checkedIn = 0;
 -- filters the results to only show checked-in drivers for a specific event.
 -- ----------------------------------------------------------------------------
 
-SELECT u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", c.model AS "Car Model", r.carClass AS "Car Class"
+SELECT u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", c.model AS "Car Model", r.carClass AS "Car Class", r.checkedIn AS "Checked-In Status"
 FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
 INNER JOIN Event AS e ON r.eventID = e.eventID
 INNER JOIN Car AS c ON r.carID = c.carID
