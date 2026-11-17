@@ -369,7 +369,7 @@ HAVING COUNT(r.registrationID) > 5;
 -- multi-condition triggers, and complex analytics.
 -- ============================================================================
 -- ----------------------------------------------------------------------------
--- Statement xx: Position Leaderboard with the score time (raw time - penalties)
+-- Statement xx: Position Leaderboard with the score time (raw time + penalties)
 -- Explanation: In this statement we utilize a CTE (CTE), time_cte, in order to find the
 -- userID, carID, scoreTime, rawTime, penaltyTime, runNumber of a specific event
 -- by the eventID. We do this through a variety of joins, where, and group by in 
@@ -434,7 +434,7 @@ WHERE a.scoreTime > (
 
 -- ----------------------------------------------------------------------------
 -- Statement xx: Drivers that continually improved for every lap given an eventID.
--- Explanation: Utilizing run_cte to find runs and their appropriate time (raw time - penalty time)
+-- Explanation: Utilizing run_cte to find runs and their appropriate time (raw time + penalty time)
 -- given penalties and the subsequent improve_cte checks if the runs continually
 -- improve via Having and NOT EXIST statements. Then we output the names of the users
 -- given by the improved_ctes.
@@ -467,7 +467,11 @@ INNER JOIN User as u ON r.userID = u.userID;
 
 -- ----------------------------------------------------------------------------
 -- Statement xx: Rank Drivers for a given event based off the delta of their best and worst run.
--- Explanation: 
+-- Explanation: Using run_cte we find the scoreTime (raw time + penalty time) at
+-- a given eventID then use min_max_cte to find the min and max run for a given
+-- user then in the main statement we use min_max_cte with an INNER JOIN for user
+-- then list out the user according to their higher value delta's and use DENSE_RANK
+-- to determine position numbers along with other values to return.
 -- ----------------------------------------------------------------------------
 
 WITH run_cte (runID, userID, scoreTime) AS (
@@ -486,14 +490,43 @@ min_max_cte(userID, fastest, slowest) AS (
     GROUP BY r.userID
 )
 
-SELECT u.firstName || ' ' || u.lastName AS 'Name', m.fastest AS 'Best Run', m.slowest AS 'Worst Run', ROUND(-(m.fastest - m.slowest), 3) AS 'Delta'
+SELECT DENSE_RANK() OVER (ORDER BY ROUND(-(m.fastest - m.slowest), 3) DESC) as 'Position', u.firstName || ' ' || u.lastName AS 'Name', m.fastest AS 'Best Run', m.slowest AS 'Worst Run', ROUND(ABS((m.fastest - m.slowest)), 3) AS 'Delta'
 FROM min_max_cte m
-INNER JOIN User AS u ON m.userID = u.userID;
+INNER JOIN User AS u ON m.userID = u.userID
+ORDER BY ROUND(-(m.fastest - m.slowest), 3) DESC;
 
 -- ----------------------------------------------------------------------------
 -- Statement xx: Rank Drivers for a given event based off the delta of their first and last run.
--- Explanation: 
+-- Explanation: Using run_cte we find the scoreTime (raw time + penalty time) at
+-- a given eventID then use first_last (CTE) to find the min and max runNum for a given
+-- user then in the main statement we use min_max_cte with an INNER JOIN for user and
+-- a series of INNER JOINs with run_cte then list out the user according to their
+-- higher value delta's and use DENSE_RANK to determine position numbers along with other
+-- values to return.
 -- ----------------------------------------------------------------------------
+
+WITH run_cte (runID, userID, scoreTime, runNum) AS (
+    SELECT r.runID, rg.userID, r.runTime + COALESCE(SUM(p.time), 0), r.runNumber
+    FROM Run AS r
+    LEFT JOIN RunPenalty rp ON r.runID = rp.runID
+    LEFT JOIN Penalty p on rp.penaltyID = p.penaltyID
+    INNER JOIN Registration AS rg ON rg.registrationID = r.registrationID
+    WHERE rg.eventID = 1
+    GROUP BY r.runID
+),
+
+first_last(userID, first, last) AS (
+    SELECT r.userID, MIN(r.runNum), MAX(r.runNum)
+    FROM run_cte AS r
+    GROUP BY r.userID
+)
+
+SELECT DENSE_RANK() OVER (ORDER BY ROUND(-(r2.scoreTime - r1.scoreTime), 3) DESC) as 'Position', u.firstName || ' ' || u.lastName AS 'Name', ROUND(ABS(r2.scoreTime - r1.scoreTime), 3) AS 'Run: Last - First'
+FROM first_last f
+INNER JOIN run_cte r1 ON r1.userID = f.userID AND f.first = r1.runNum
+INNER JOIN run_cte r2 ON r2.userID = f.userID AND f.last = r2.runNum
+INNER JOIN User AS u ON f.userID = u.userID
+ORDER BY ROUND(-(r2.scoreTime - r1.scoreTime), 3) DESC;
 
 
 -- ----------------------------------------------------------------------------
