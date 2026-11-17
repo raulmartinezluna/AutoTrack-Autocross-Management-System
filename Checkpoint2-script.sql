@@ -203,15 +203,23 @@ DELETE FROM RunPenalty
 WHERE runID = 30 AND penaltyID = 4;
 
 -- ----------------------------------------------------------------------------
--- Statement 21: List Events by orderDate, exclude dates past currentTime
--- Explanation: 
+-- Statement 21: List Events by order date ascending, exclude dates past current date.
+-- Explanation: Returns all data relating to an events that are occuring on or after the
+-- current date. Then order by the date in a ascending manner
 -- ----------------------------------------------------------------------------
-
+SELECT *
+FROM Event
+WHERE DATE('NOW') <= date
+ORDER BY date;
 -- ----------------------------------------------------------------------------
--- Statement 22: List Events by orderDate, that have already passed
--- Explanation: 
+-- Statement 22: List Events by order date descending, that have already passed.
+-- Explanation: Returns all data relating to events that are occuring before the
+-- current date. Then order by the date in a descending manner
 -- ----------------------------------------------------------------------------
-
+SELECT *
+FROM Event
+WHERE DATE('NOW') > date
+ORDER BY DATE DESC;
 -- ----------------------------------------------------------------------------
 -- Statement 23: List managers at a specific event
 -- Explanation: This query retrieves all managers at by a specific event via the
