@@ -382,11 +382,11 @@ HAVING COUNT(r.registrationID) > 5;
 -- ----------------------------------------------------------------------------
 
 WITH time_cte (userID, carID, scoreTime, rawTime, penaltyTime, runNumber) AS (
-    SELECT r.userID, rg.carID, r.runTime-sum(p.time), r.runTime, sum(p.time), r.runNumber
+    SELECT r.userID, rg.carID, r.runTime+COALESCE(SUM(p.time), 0), r.runTime, COALESCE(SUM(p.time), 0), r.runNumber
     FROM Registration rg
     INNER JOIN Run r ON rg.registrationID = r.registrationID
-    INNER JOIN RunPenalty rp ON r.runID = rp.runID
-    INNER JOIN Penalty p on rp.penaltyID = p.penaltyID
+    LEFT JOIN RunPenalty rp ON r.runID = rp.runID
+    LEFT JOIN Penalty p on rp.penaltyID = p.penaltyID
     WHERE eventID = 1
     group by r.runID
 )
@@ -405,10 +405,10 @@ ORDER BY t.scoreTime ASC;
 -- ----------------------------------------------------------------------------
 
 WITH run_cte (runID, userID, scoreTime) AS (
-    SELECT r.runID, rg.userID, r.runTime - SUM(p.time)
+    SELECT r.runID, rg.userID, r.runTime + COALESCE(SUM(p.time), 0)
     FROM Run AS r
-    INNER JOIN RunPenalty rp ON r.runID = rp.runID
-    INNER JOIN Penalty p on rp.penaltyID = p.penaltyID
+    LEFT JOIN RunPenalty rp ON r.runID = rp.runID
+    LEFT JOIN Penalty p on rp.penaltyID = p.penaltyID
     INNER JOIN Registration AS rg ON rg.registrationID = r.registrationID
     WHERE rg.eventID = 1
     GROUP BY r.runID
@@ -434,21 +434,24 @@ WHERE a.scoreTime > (
 );
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Drivers that are better then average.
+-- Statement xx: Drivers that continually improved for every lap given an eventID.
 -- Explanation: 
 -- ----------------------------------------------------------------------------
+WITH run_cte (runID, userID, scoreTime) AS (
+    SELECT r.runID, rg.userID, r.runTime + COALESCE(SUM(p.time), 0)
+    FROM Run AS r
+    INNER JOIN RunPenalty rp ON r.runID = rp.runID
+    INNER JOIN Penalty p on rp.penaltyID = p.penaltyID
+    INNER JOIN Registration AS rg ON rg.registrationID = r.registrationID
+    WHERE rg.eventID = 1
+    GROUP BY r.runID
+)
+
+SELECT *
+FROM run_cte AS r;
 
 
 
--- ----------------------------------------------------------------------------
-
-
-
--- Francisco's (DELETE THIS LATER)
-
--- ----------------------------------------------------------------------------
--- Statement xx: [Brief Title]
--- Explanation: [1 to 2 sentences explaining the complex query/trigger logic].
 -- ----------------------------------------------------------------------------
 -- Statement xx: Find drivers with runs but no penalties
 -- Explanation: The cte collects completed runs with driver and event
