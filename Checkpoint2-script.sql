@@ -92,6 +92,7 @@ PRAGMA foreign_keys = ON;
 -- ----------------------------------------------------------------------------
 INSERT INTO User (username, passwordhash, isDriver, isManager, firstName, lastName, birthday)
 VALUES ('rmartinezluna', 'testhash11', 1, 1, 'Raul', 'Martinez Luna', '2005-01-01');
+
 -- ----------------------------------------------------------------------------
 -- Statement 02: Update user information.
 -- Explanation: The query updates a users information. The information is updated based off userID.
@@ -99,12 +100,14 @@ VALUES ('rmartinezluna', 'testhash11', 1, 1, 'Raul', 'Martinez Luna', '2005-01-0
 UPDATE User
 SET firstName = 'Roland'
 WHERE userID = 11;
+
 -- ----------------------------------------------------------------------------
 -- Statement 03: Deletes user information.
 -- Explanation: The query deletes the users information. The information is updated based off userID.
 -- ----------------------------------------------------------------------------
 DELETE FROM User
 WHERE userID = 11;
+
 -- ----------------------------------------------------------------------------
 -- Statement 04: Insert into Car.
 -- Explanation: The query inserts a car into the database. 
@@ -112,6 +115,7 @@ WHERE userID = 11;
 -- ----------------------------------------------------------------------------
 INSERT INTO Car (licenseNumber, model, year, isModified, userID)
 VALUES ('234dsf23413', 'Mitsubishi Lancer', '2017', 1, 1);
+
 -- ----------------------------------------------------------------------------
 -- Statement 05: Update car information.
 -- Explanation: The query updates the car information. The information is updated based off carID.
@@ -119,12 +123,14 @@ VALUES ('234dsf23413', 'Mitsubishi Lancer', '2017', 1, 1);
 UPDATE Car
 SET licenseNumber = '23243ggg23432'
 WHERE carID = 11;
+
 -- ----------------------------------------------------------------------------
 -- Statement 06: Delete car information.
 -- Explanation: The query deletes the car information. The information is updated based off carID.
 -- ----------------------------------------------------------------------------
 DELETE FROM Car
 WHERE carID = 11;
+
 -- ----------------------------------------------------------------------------
 -- Statement 07: Insert into Events.
 -- Explanation: The query inserts an event into the database. 
@@ -132,6 +138,7 @@ WHERE carID = 11;
 -- ----------------------------------------------------------------------------
 INSERT INTO Event (cost, title, course, location, difficulty, date, startTime, endTime, numAttempts)
 VALUES (50, 'Non-Modified Cars', 'Laguna Seca', 'Monterey', 'hard', '2026-12-25',  '09:00', '16:00', 3);
+
 -- ----------------------------------------------------------------------------
 -- Statement 08: Update event information.
 -- Explanation: The query updates a event information. The information is updated based off eventID
@@ -139,12 +146,14 @@ VALUES (50, 'Non-Modified Cars', 'Laguna Seca', 'Monterey', 'hard', '2026-12-25'
 UPDATE Event
 SET title = 'Modified Cars'
 WHERE eventID = 6;
+
 -- ----------------------------------------------------------------------------
 -- Statement 09: Delete event information.
 -- Explanation: The query deletes the event information. The information is updated based off eventID
 -- ----------------------------------------------------------------------------
 DELETE FROM Event
 WHERE eventID = 6;
+
 -- ----------------------------------------------------------------------------
 -- Statement 10: Insert into Registration.
 -- Explanation: The query inserts a registration into the database. 
@@ -152,6 +161,7 @@ WHERE eventID = 6;
 -- ----------------------------------------------------------------------------
 INSERT INTO Registration (userID, eventID, carID, registrationStatus, registrationDate, carClass, checkedIn)
 VALUES (8, 5, 8, 'Pending', '2026-11-12', 'Street', 0);
+
 -- ----------------------------------------------------------------------------
 -- Statement 11: Update registration information (registrationStatus).
 -- Explanation: The query updates registration information. The information is updated based off registrationID
@@ -159,12 +169,14 @@ VALUES (8, 5, 8, 'Pending', '2026-11-12', 'Street', 0);
 UPDATE Registration
 SET registrationStatus = 'Confirmed'
 WHERE registrationID = 31;
+
 -- ----------------------------------------------------------------------------
 -- Statement 12: Delete registration information.
 -- Explanation: The query deletes registration information. The information is updated based off registrationID
 -- ----------------------------------------------------------------------------
 DELETE FROM Registration
 WHERE registrationID = 31;
+
 -- ----------------------------------------------------------------------------
 -- Statement 13: Insert row into ManagesEvent.
 -- Explanation: The query inserts a row for ManagesEvent into the database. 
@@ -172,24 +184,28 @@ WHERE registrationID = 31;
 -- ----------------------------------------------------------------------------
 INSERT INTO ManagesEvent (userID, eventID)
 VALUES (8, 3);
+
 -- ----------------------------------------------------------------------------
 -- Statement 14: Delete ManagesEvent information.
 -- Explanation: The query deletes ManagesEvent information. The information is updated based off userID, eventID
 -- ----------------------------------------------------------------------------
 DELETE FROM ManagesEvent
 WHERE userID = 8 AND eventID = 3;
+
 -- ----------------------------------------------------------------------------
 -- Statement 15: Delete Run information if mistake occured.
 -- Explanation: The query deletes ManagesEvent information. The information is updated based off userID, eventID
 -- ----------------------------------------------------------------------------
 DELETE FROM Run
 WHERE runID = 31;
+
 -- ----------------------------------------------------------------------------
 -- Statement 16: Insert penalty information.
 -- Explanation: The query inserts a row for penalties. Containing values of time (penalty time), description.
 -- ----------------------------------------------------------------------------
 INSERT INTO Penalty (time, description)
 VALUES (25, 'Oil');
+
 -- ----------------------------------------------------------------------------
 -- Statement 17: Update penalty information.
 -- Explanation: The query updates penalty information. The information is updated based off penaltyID.
@@ -197,18 +213,21 @@ VALUES (25, 'Oil');
 UPDATE Penalty
 SET description = 'Leaked oil.'
 WHERE penaltyID = 11;
+
 -- ----------------------------------------------------------------------------
 -- Statement 18: Deletes penalty information.
 -- Explanation: The query deletes the penalty information. The information is updated based off penaltyID.
 -- ----------------------------------------------------------------------------
 DELETE FROM Penalty
 WHERE penaltyID = 5;
+
 -- ----------------------------------------------------------------------------
 -- Statement 19: Insert RunPenalty information.
 -- Explanation: The query inserts a row for RunPenalty. Containing values of runID, penaltyID.
 -- ----------------------------------------------------------------------------
 INSERT INTO RunPenalty (runID, penaltyID)
 VALUES (30, 4);
+
 -- ----------------------------------------------------------------------------
 -- Statement 20: Deletes RunPenalty information.
 -- Explanation: The query deletes the RunPenalty information. The information is deleted based off both runID, penaltyID.
@@ -225,6 +244,7 @@ SELECT *
 FROM Event
 WHERE DATE('NOW') <= date
 ORDER BY date;
+
 -- ----------------------------------------------------------------------------
 -- Statement 22: List Events by order date descending, that have already passed.
 -- Explanation: Returns all data relating to events that are occuring before the
@@ -234,6 +254,7 @@ SELECT *
 FROM Event
 WHERE DATE('NOW') > date
 ORDER BY DATE DESC;
+
 -- ----------------------------------------------------------------------------
 -- Statement 23: List managers at a specific event
 -- Explanation: This query retrieves all managers at by a specific event via the
@@ -243,6 +264,7 @@ SELECT u.firstName || ' ' || u.lastName AS 'Managers At Event'
 FROM ManagesEvent m
 INNER JOIN User u ON m.userID = u.userID
 WHERE m.eventID = 1;
+
 -- ----------------------------------------------------------------------------
 -- Statement 24: List cars owned by a specific user.
 -- Explanation: This query retrieves all cars owned by a specific user via their
@@ -320,7 +342,6 @@ GROUP BY u.userID, u.firstName, u.lastName;
 -- including managers with no assigned events. Count calculates the total
 -- number of events managed by each user.
 -- ----------------------------------------------------------------------------
-
 SELECT u.userID AS "Manager ID", u.firstName AS "First Name", u.lastName AS "Last Name", COUNT(m.eventID) AS "Managed Event Count"
 FROM User AS u LEFT JOIN ManagesEvent AS m ON u.userID = m.userID
 WHERE u.isManager = 1
@@ -332,7 +353,6 @@ GROUP BY u.userID, u.firstName, u.lastName;
 -- tables to find events registered by a specific driver. The where clause
 -- filters the results to only show registrations for that driver.
 -- ----------------------------------------------------------------------------
-
 SELECT u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", e.date AS "Date", e.location AS "Location", r.registrationStatus AS "Registration Status"
 FROM User AS u INNER JOIN Registration AS r ON u.userID = r.userID
 INNER JOIN Event AS e ON r.eventID = e.eventID
@@ -343,7 +363,6 @@ WHERE u.userID = 1 AND u.isDriver = 1;
 -- Explanation: Joins registrations with users and events to display
 -- all registrations that have not been checked in.
 -- ----------------------------------------------------------------------------
-
 SELECT r.registrationID AS "Registration ID", u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", e.date AS "Date", r.checkedIn AS "Checked-In Status"
 FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
 INNER JOIN Event AS e ON r.eventID = e.eventID
@@ -355,7 +374,6 @@ WHERE r.checkedIn = 0;
 -- tables to display driver, event, and car information. The where clause
 -- filters the results to only show checked-in drivers for a specific event.
 -- ----------------------------------------------------------------------------
-
 SELECT u.firstName || ' ' || u.lastName AS "Driver Name", e.title AS "Event Title", c.model AS "Car Model", r.carClass AS "Car Class", r.checkedIn AS "Checked-In Status"
 FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
 INNER JOIN Event AS e ON r.eventID = e.eventID
@@ -368,7 +386,6 @@ WHERE r.checkedIn = 1 AND e.eventID = 1;
 -- including events with no registered drivers. COUNT calculates the total
 -- number of registrations for each event.
 -- ----------------------------------------------------------------------------
-
 SELECT e.eventID AS "Event ID", e.title AS "Event Title", e.date AS "Date", COUNT(r.registrationID) AS "Registration Count"
 FROM Event AS e LEFT JOIN Registration AS r ON e.eventID = r.eventID
 GROUP BY e.eventID, e.title, e.date;
@@ -379,7 +396,6 @@ GROUP BY e.eventID, e.title, e.date;
 -- event, and car information. The subquery finds the minimum raw run time
 -- for a specific event, including all runs tied for the fastest time.
 -- ----------------------------------------------------------------------------
-
 SELECT e.title AS "Event Title", u.firstName || ' ' || u.lastName AS "Driver Name", c.model AS "Car Model", ru.runNumber AS "Run Number", ru.runTime AS "Raw Time"
 FROM Run AS ru INNER JOIN Registration AS r ON ru.registrationID = r.registrationID
 INNER JOIN User AS u ON r.userID = u.userID
@@ -398,7 +414,7 @@ WHERE e.eventID = 1
 -- Explanation: The inner join connects each event to its registrations,
 -- while group by organizes the registrations by event. COUNT calculates
 -- the number of registrations, and HAVING filters for events with more than five.
-
+-- ----------------------------------------------------------------------------
 SELECT e.eventID AS "Event ID", e.title AS "Event Title", e.date AS "Date", COUNT(r.registrationID) AS "Registration Count"
 FROM Event AS e INNER JOIN Registration AS r ON e.eventID = r.eventID
 GROUP BY e.eventID, e.title, e.date
