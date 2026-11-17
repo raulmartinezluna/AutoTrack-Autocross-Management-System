@@ -435,20 +435,37 @@ WHERE a.scoreTime > (
 
 -- ----------------------------------------------------------------------------
 -- Statement xx: Drivers that continually improved for every lap given an eventID.
--- Explanation: 
+-- Explanation: Utilizing run_cte to find runs and their appropriate time (raw time - penalty time)
+-- given penalties and the subsequent improve_cte checks if the runs continually
+-- improve via Having and NOT EXIST statements. Then we output the names of the users
+-- given by the improved_ctes.
 -- ----------------------------------------------------------------------------
-WITH run_cte (runID, userID, scoreTime) AS (
-    SELECT r.runID, rg.userID, r.runTime + COALESCE(SUM(p.time), 0)
+WITH run_cte (runID, userID, scoreTime, runNum) AS (
+    SELECT r.runID, rg.userID, r.runTime + COALESCE(SUM(p.time), 0), r.runNumber
     FROM Run AS r
-    INNER JOIN RunPenalty rp ON r.runID = rp.runID
-    INNER JOIN Penalty p on rp.penaltyID = p.penaltyID
+    LEFT JOIN RunPenalty rp ON r.runID = rp.runID
+    LEFT JOIN Penalty p on rp.penaltyID = p.penaltyID
     INNER JOIN Registration AS rg ON rg.registrationID = r.registrationID
-    WHERE rg.eventID = 1
+    WHERE rg.eventID = 2
     GROUP BY r.runID
+),
+
+improved_cte AS (
+    SELECT r1.userID
+    FROM run_cte as r1
+    GROUP BY r1.userID
+    HAVING COUNT(*) >= 2 AND NOT EXISTS (
+        SELECT 1
+        FROM run_cte as r2
+        INNER JOIN run_cte as r3 ON r2.userID = r3.userID
+        WHERE r2.userID = r1.userID AND r2.runNum < r3.runNum AND r2.scoreTime <= r3.scoreTime
+    )
 )
 
-SELECT *
-FROM run_cte AS r;
+SELECT u.firstName || ' ' || u.lastName AS 'Always Improving'
+FROM improved_cte AS r
+INNER JOIN User as u ON r.userID = u.userID;
+
 
 
 
