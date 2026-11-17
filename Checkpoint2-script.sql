@@ -663,18 +663,25 @@ SELECT title AS "Event Title", firstName || ' ' || lastName AS "Driver Name", ru
 FROM RunCounts;
 
 -- ----------------------------------------------------------------------------
--- Statement xx: Calculate total penalty time for each run
--- Explanation: The CTE joins runs with driver and penalty information,
--- using SUM to calculate total penalty time and COALESCE to handle runs
--- without penalties. The final query adds penalty time to raw run time.
-WITH RunPenalties AS (
-    SELECT ru.runID, u.firstName, u.lastName, ru.runNumber, ru.runTime, COALESCE(SUM(p.time), 0) AS penaltyTime
-    FROM Run AS ru INNER JOIN Registration AS r ON ru.registrationID = r.registrationID
-    INNER JOIN User AS u ON r.userID = u.userID
-    LEFT JOIN RunPenalty AS rp ON ru.runID = rp.runID
-    LEFT JOIN Penalty AS p ON rp.penaltyID = p.penaltyID
-    GROUP BY ru.runID, u.firstName, u.lastName, ru.runNumber, ru.runTime
+-- Statement xx: Rank cars by best performance within each class
+-- Explanation: The cte calculates each car's best adjusted run time
+-- for the given event. DENSE_RANK ranks cars from fastest to slowest
+-- within their carClass, restarting the ranking for each class.
+WITH CarPerformance AS (
+    SELECT r.carClass, u.firstName, u.lastName, c.year, c.model, c.carID, MIN(ru.runTime - COALESCE(pen.penaltyTime, 0)) AS bestTime
+    FROM Registration AS r INNER JOIN User AS u ON r.userID = u.userID
+    INNER JOIN Car AS c ON r.carID = c.carID
+    INNER JOIN Run AS ru ON r.registrationID = ru.registrationID
+    LEFT JOIN (
+        SELECT rp.runID, SUM(p.time) AS penaltyTime
+        FROM RunPenalty AS rp
+        INNER JOIN Penalty AS p ON rp.penaltyID = p.penaltyID
+        GROUP BY rp.runID
+    ) AS pen ON ru.runID = pen.runID
+    WHERE r.eventID = 1 AND ru.runTime IS NOT NULL
+    GROUP BY r.registrationID, r.carClass, u.firstName, u.lastName, c.year, c.model, c.carID
 )
-SELECT runID AS "Run ID", firstName || ' ' || lastName AS "Driver Name", runNumber AS "Run Number", runTime AS "Raw Time", penaltyTime AS "Penalty Time", runTime + penaltyTime AS "Final Time"
-FROM RunPenalties;
+SELECT DENSE_RANK() OVER (PARTITION BY carClass ORDER BY bestTime ASC) AS "Rank", firstName || ' ' || lastName AS "Name", year || ' ' || model AS "Year + Model", carClass
+FROM CarPerformance
+ORDER BY carClass, "Rank";
 
