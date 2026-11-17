@@ -23,16 +23,30 @@
 -- below. Each statement must sum to 100% across the 2 team members.
 --
 -- SECTION 1: SIMPLE STATEMENTS
--- Statement 01: [Member 1]: XX%, [Member 2]: XX%
--- Statement 02: [Member 1]: XX%, [Member 2]: XX%
--- Statement 03: [Member 1]: XX%, [Member 2]: XX%
--- Statement 04: [Member 1]: XX%, [Member 2]: XX%
--- Statement 05: [Member 1]: XX%, [Member 2]: XX%
--- Statement 06: [Member 1]: XX%, [Member 2]: XX%
--- Statement 07: [Member 1]: XX%, [Member 2]: XX%
--- Statement 08: [Member 1]: XX%, [Member 2]: XX%
--- Statement 09: [Member 1]: XX%, [Member 2]: XX%
--- Statement 10: [Member 1]: XX%, [Member 2]: XX%
+-- Statement 01: Raul Martinez Luna 100%
+-- Statement 02: Raul Martinez Luna 100%
+-- Statement 03: Raul Martinez Luna 100%
+-- Statement 04: Raul Martinez Luna 100%
+-- Statement 05: Raul Martinez Luna 100%
+-- Statement 06: Raul Martinez Luna 100%
+-- Statement 07: Raul Martinez Luna 100%
+-- Statement 08: Raul Martinez Luna 100%
+-- Statement 09: Raul Martinez Luna 100%
+-- Statement 10: Raul Martinez Luna 100%
+-- Statement 11: Raul Martinez Luna 100%
+-- Statement 12: Raul Martinez Luna 100%
+-- Statement 13: Raul Martinez Luna 100%
+-- Statement 14: Raul Martinez Luna 100%
+-- Statement 15: Raul Martinez Luna 100%
+-- Statement 16: Raul Martinez Luna 100%
+-- Statement 17: Raul Martinez Luna 100%
+-- Statement 18: Raul Martinez Luna 100%
+-- Statement 19: Raul Martinez Luna 100%
+-- Statement 20: Raul Martinez Luna 100%
+-- Statement 21: Raul Martinez Luna 100%
+-- Statement 22: Raul Martinez Luna 100%
+-- Statement 23: Raul Martinez Luna 100%
+-- Statement 24: Raul Martinez Luna 100%
 --
 -- SECTION 2: INTERMEDIATE STATEMENTS
 -- Statement 11: [Member 1]: XX%, [Member 2]: XX%
