@@ -80,7 +80,7 @@ PRAGMA foreign_keys = ON;
 .headers on
 .mode column
 -- ============================================================================
--- SECTION 1: SIMPLE STATEMENTS (Roughly 10 Statements)
+-- SECTION 1: SIMPLE STATEMENTS (24 Statements)
 -- Focus: Single-table projections/filters, simple inserts/updates/deletes,
 -- basic sorting, simple aggregate functions, and pattern matching.
 -- ============================================================================
@@ -255,7 +255,7 @@ WHERE c.userID = 1;
 
 
 -- ============================================================================
--- SECTION 2: INTERMEDIATE STATEMENTS (Roughly 10 Statements)
+-- SECTION 2: INTERMEDIATE STATEMENTS (11 Statements)
 -- Focus: Multi-table inner joins, left outer joins, aggregation with GROUP BY
 -- and HAVING, scalar subqueries, table aliasing, and conditional updates.
 -- ============================================================================
@@ -406,7 +406,7 @@ HAVING COUNT(r.registrationID) > 5;
 
 
 -- ============================================================================
--- SECTION 3: COMPLEX STATEMENTS (Roughly 10 Statements)
+-- SECTION 3: COMPLEX STATEMENTS (10 Statements)
 -- Focus: Correlated subqueries (EXISTS/NOT EXISTS), set operations
 -- (UNION, INTERSECT, EXCEPT), Common Table Expressions (WITH / CTEs),
 -- window functions (ROW_NUMBER, DENSE_RANK), VIEW creation/querying,
