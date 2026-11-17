@@ -62,17 +62,16 @@
 -- Statement 35: Fransisco Arreola: 100%
 --
 -- SECTION 3: COMPLEX STATEMENTS
--- Statement 22: [Member 1]: XX%, [Member 2]: XX%
--- Statement 23: [Member 1]: XX%, [Member 2]: XX%
--- Statement 24: [Member 1]: XX%, [Member 2]: XX%
--- Statement 25: [Member 1]: XX%, [Member 2]: XX%
--- Statement 26: [Member 1]: XX%, [Member 2]: XX%
--- Statement 27: [Member 1]: XX%, [Member 2]: XX%
--- Statement 28: [Member 1]: XX%, [Member 2]: XX%
--- Statement 29: [Member 1]: XX%, [Member 2]: XX%
--- Statement 30: [Member 1]: XX%, [Member 2]: XX%
--- Statement 31: [Member 1]: XX%, [Member 2]: XX%
--- Statement 32: [Member 1]: XX%, [Member 2]: XX%
+-- Statement 36: Raul Martinez Luna: 100%
+-- Statement 37: Raul Martinez Luna: 100%
+-- Statement 38: Raul Martinez Luna: 100%
+-- Statement 39: Raul Martinez Luna: 100%
+-- Statement 40: Raul Martinez Luna: 100%
+-- Statement 41: Fransisco Arreola: 100%
+-- Statement 42: Fransisco Arreola: 100%
+-- Statement 43: Fransisco Arreola: 100%
+-- Statement 44: Fransisco Arreola: 100%
+-- Statement 45: Fransisco Arreola: 100%
 -- ============================================================================
 -- Ensure SQLite foreign key constraints are enforced
 PRAGMA foreign_keys = ON;
